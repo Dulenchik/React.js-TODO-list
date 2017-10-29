@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_PROJECT } from './../../js/actions/projects';
+import { ADD_PROJECT, DELETE_PROJECT } from './../../js/actions/projects';
 
 const projectsList = [
   { id: 1, name: 'Setup Rails' },
@@ -11,6 +11,8 @@ function projects(state = projectsList, action) {
   switch (action.type) {
     case ADD_PROJECT:
       return state.concat({ id: state.length + 1, name: action.name })
+    case DELETE_PROJECT:
+      return state.filter(project => project.id !== action.id );
     default:
       return state;
   }
