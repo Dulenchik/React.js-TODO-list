@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Home from './js/pages/home';
-import SignIn from './js/pages/sign_in';
-import SignUp from './js/pages/sign_up';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Grid } from 'react-bootstrap';
+
+import reducer from './js/reducers/index';
+import NavBar from './js/components/shared/NavBar';
+
+import Home from './js/pages/Home';
+import SignIn from './js/pages/SignIn';
+import SignUp from './js/pages/SignUp';
+
+let store = createStore(reducer);
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div>
-          <ul>
-            <li>
-              <Link to='/'>Home</Link>
-              <Link to='/sign_in'>SignIn</Link>
-              <Link to='/sign_up'>SignUp</Link>
-            </li>
-          </ul>
+      <Provider store={store}>
+        <Router>
+          <div>
+            <NavBar />
 
-          <Route exact path='/' component={Home}/>
-          <Route exact path='/sign_in' component={SignIn}/>
-          <Route exact path='/sign_up' component={SignUp}/>
-        </div>
-      </Router>
+            <Grid>
+              <Route exact path='/' component={Home}/>
+              <Route exact path='/sign_in' component={SignIn}/>
+              <Route exact path='/sign_up' component={SignUp}/>
+            </Grid>
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
