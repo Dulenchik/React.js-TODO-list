@@ -9,7 +9,7 @@ class ProjectsList extends Component {
             <li key={project.id}>
               <span>{project.name}</span>
 
-              <button>Edit</button>
+              <button onClick={() => this.props.onUpdate(project.id, 'Boom!')}>Edit</button>
               <button onClick={() => this.props.onDelete(project.id)}>Delete</button>
             </li>
           )

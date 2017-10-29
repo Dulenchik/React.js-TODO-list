@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import ProjectsList from './../../js/components/ProjectsList';
 import NewProject from './../../js/components/NewProject';
 
-import { addProject, deleteProject } from './../../js/actions/projects';
+import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.handleSaveProject = this.handleSaveProject.bind(this);
     this.handleDeleteProject = this.handleDeleteProject.bind(this);
+    this.handleUpdateProject = this.handleUpdateProject.bind(this);
   };
 
   handleSaveProject(newProjectName) {
@@ -21,12 +22,17 @@ class Home extends Component {
     this.props.dispatch(deleteProject(id))
   }
 
+  handleUpdateProject(id, newProjectName) {
+    this.props.dispatch(updateProject(id, newProjectName))
+  }
+
   render() {
     return (
       <div>
         <ProjectsList
           projects={this.props.projects}
           onDelete={this.handleDeleteProject}
+          onUpdate={this.handleUpdateProject}
         />
         <NewProject onSave={this.handleSaveProject}/>
       </div>
