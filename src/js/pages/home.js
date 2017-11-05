@@ -7,22 +7,15 @@ import NewProject from './../../js/components/NewProject';
 import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSaveProject = this.handleSaveProject.bind(this);
-    this.handleDeleteProject = this.handleDeleteProject.bind(this);
-    this.handleUpdateProject = this.handleUpdateProject.bind(this);
-  };
-
-  handleSaveProject(newProjectName) {
+  handleSaveProject = (newProjectName) => {
     this.props.dispatch(addProject(newProjectName))
   };
 
-  handleDeleteProject(id) {
+  handleDeleteProject = (id) => {
     this.props.dispatch(deleteProject(id))
   }
 
-  handleUpdateProject(id, newProjectName) {
+  handleUpdateProject = (id, newProjectName) => {
     this.props.dispatch(updateProject(id, newProjectName))
   }
 
