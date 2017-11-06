@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ProjectsList from './../../js/components/ProjectsList';
-import NewProject from './../../js/components/NewProject';
+import List from './../components/projects/List';
 
 import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
 
 class Home extends Component {
-  handleSaveProject = (newProjectName) => {
+  handleCreateProject = (newProjectName) => {
     this.props.dispatch(addProject(newProjectName))
   };
 
@@ -22,12 +21,13 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <ProjectsList
+        <List
           projects={this.props.projects}
           onDelete={this.handleDeleteProject}
           onUpdate={this.handleUpdateProject}
+
+          onCreate={this.handleCreateProject}
         />
-        <NewProject onSave={this.handleSaveProject}/>
       </div>
     );
   };

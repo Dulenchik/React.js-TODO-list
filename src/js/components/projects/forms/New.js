@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+
 let input;
-class NewProject extends Component {
+
+class New extends Component {
   constructor(props) {
     super(props);
 
@@ -9,7 +11,7 @@ class NewProject extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSave(input.value);
+    this.props.onSubmit(input.value);
     this.handleCancel(e);
   };
 
@@ -25,7 +27,7 @@ class NewProject extends Component {
 
   render() {
     return (
-      <div>
+      <form onSubmit={this.handleSubmit}>
         <input
           type='text'
           placeholder='Enter Project Name...'
@@ -33,11 +35,11 @@ class NewProject extends Component {
           onChange={this.handleChange}
         />
 
-        { this.state.isEdit && <button onClick={this.handleSubmit}>Save</button> }
+        { this.state.isEdit && <button type='submit'>Save</button> }
         { this.state.isEdit && <button onClick={this.handleCancel}>Cancel</button> }
-      </div>
+      </form>
     );
   };
 };
 
-export default NewProject;
+export default New;
