@@ -7,6 +7,17 @@ const projectsList = [
   { id: 3, name: 'Enjoy!' }
 ]
 
+const tasksList = [
+  { id: 39, name: 'Apply Redux', position: 1, projectId: 2, isDone: false },
+  { id: 37, name: 'Learn Redux', position: 0, projectId: 2, isDone: true },
+
+  { id: 5, name: 'Take a Coffee', position: 0, projectId: 3, isDone: false },
+
+  { id: 12, name: 'Generate App', position: 0, projectId: 1, isDone: true },
+  { id: 17, name: 'Implement Business Logic', position: 1, projectId: 1, isDone: true },
+  { id: 23, name: 'Write specs', position: 2, projectId: 1, isDone: false }
+]
+
 function projects(state = projectsList, action) {
   switch (action.type) {
     case ADD_PROJECT:
@@ -26,7 +37,7 @@ function projects(state = projectsList, action) {
   }
 };
 
-function tasks(state = [], action) {
+function tasks(state = tasksList, action) {
   return state;
 };
 

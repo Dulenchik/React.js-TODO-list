@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { groupBy, each, sortBy } from 'lodash';
 
 import List from './../components/projects/List';
 
@@ -34,7 +35,12 @@ class Home extends Component {
 };
 
 function mapStateToProps(state) {
-  const { projects } = state;
+  const { projects, tasks } = state;
+
+  let groupedTasks = groupBy(tasks, 'projectId')
+  each(projects, (project) =>
+    project.tasks = sortBy(groupedTasks[project.id] || [], 'position')
+  )
 
   return { projects };
 }

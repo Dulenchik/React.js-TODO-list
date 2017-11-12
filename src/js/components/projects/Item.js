@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Edit from './forms/Edit';
-
-let input;
+import List from '../tasks/List';
 
 class Item extends Component {
   constructor(props) {
@@ -44,6 +43,8 @@ class Item extends Component {
             <Edit name={this.props.name} onSubmit={this.handleUpdate} onCancel={this.handleCancel}/> :
             projectItem
         }
+
+        <List tasks={this.props.tasks}/>
       </div>
     );
   }
