@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Edit from './forms/Edit';
-import List from '../tasks/List';
+// import List from '../tasks/List';
 
 class Item extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class Item extends Component {
             projectItem
         }
 
-        <List tasks={this.props.tasks}/>
+        { this.props.children }
       </div>
     );
   }
