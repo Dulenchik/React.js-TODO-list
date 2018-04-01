@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 let input;
 
-class New extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { isEdit: false };
+    this.state = { isEdit: !props.alwaysShowControls };
   };
 
   handleSubmit = (e) => {
@@ -18,11 +18,12 @@ class New extends Component {
   handleCancel = (e) => {
     e.preventDefault();
     input.value = '';
+    if (this.props.onCancel) { this.props.onCancel() };
     this.handleChange(e)
   }
 
   handleChange = (e) => {
-    this.setState({ isEdit: !!input.value });
+    if (this.props.alwaysShowControls) { this.setState({ isEdit: !!input.value }) };
   }
 
   render() {
@@ -30,8 +31,9 @@ class New extends Component {
       <form onSubmit={this.handleSubmit}>
         <input
           type='text'
-          placeholder='Enter Project Name...'
+          placeholder={this.props.placeholder}
           ref={node => { input = node }}
+          defaultValue={this.props.name}
           onChange={this.handleChange}
         />
 
@@ -42,4 +44,4 @@ class New extends Component {
   };
 };
 
-export default New;
+export default Form;

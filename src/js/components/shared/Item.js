@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Edit from './forms/Edit';
+import { default as Edit } from '../shared/Form';
 
 class Item extends Component {
   constructor(props) {
@@ -17,19 +17,20 @@ class Item extends Component {
     this.setState({ isEditable: false })
   }
 
-  handleUpdate = (newTaskName) => {
-    this.props.onUpdateTask(this.props.id, newTaskName)
+  handleUpdate = (newItemName) => {
+    this.props.onUpdate(this.props.id, newItemName)
     this.handleCancel()
   }
 
   handleDelete = () => {
-    this.props.onDeleteTask(this.props.id)
+    this.props.onDelete(this.props.id)
   }
 
   render() {
-    const taskItem = <div>
-      <span>{this.props.name}</span>
-
+    const item = <div>
+      <span>
+        {this.props.name}
+      </span>
       <button onClick={this.handleEdit}>Edit</button>
       <button onClick={this.handleDelete}>Delete</button>
     </div>
@@ -38,9 +39,15 @@ class Item extends Component {
       <div>
         {
           this.state.isEditable ?
-            <Edit name={this.props.name} onSubmit={this.handleUpdate} onCancel={this.handleCancel}/> :
-            taskItem
+            <Edit name={this.props.name}
+                  placeholder={this.props.placeholder}
+                  onSubmit={this.handleUpdate}
+                  onCancel={this.handleCancel}
+                  alwaysShowControls={false}/> :
+            item
         }
+
+        { this.props.children }
       </div>
     );
   }

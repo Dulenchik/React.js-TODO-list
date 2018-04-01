@@ -49,9 +49,7 @@ function projects(state = projectsList, action) {
 function tasks(state = tasksList, action) {
   switch (action.type) {
     case ADD_TASK:
-      let s = state.concat({ id: action.id, name: action.name, isDone: false, position: state.length + 1 })
-      console.log(s)
-      return s
+      return state.concat({ id: action.id, name: action.name, isDone: false, position: state.length + 1 })
     case DELETE_TASK:
       return state.filter(task => task.id !== action.id );
     case UPDATE_TASK:

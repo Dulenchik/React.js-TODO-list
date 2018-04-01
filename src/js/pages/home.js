@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
 
-import { default as Project } from './../components/projects/Item';
-import { default as NewProject } from './../components/projects/forms/New';
+import { default as Project } from './../components/shared/Item';
+import { default as NewProject } from './../components/shared/Form';
 
-import { default as Task } from './../components/tasks/Item';
-import { default as NewTask } from './../components/tasks/forms/New';
+import { default as Task } from './../components/shared/Item';
+import { default as NewTask } from './../components/shared/Form';
 
 import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
 import { addTask, deleteTask, updateTask } from './../../js/actions/tasks';
@@ -24,8 +24,10 @@ class Home extends Component {
     this.props.dispatch(deleteProject(id))
   }
 
-  handleCreateTask = (newTaskName, projectId) => {
-    this.props.dispatch(addTask(newTaskName, projectId))
+  handleCreateTask = (projectId) => {
+    return (newTaskName) => {
+      this.props.dispatch(addTask(newTaskName, projectId))
+    };
   }
 
   handleUpdateTask = (id, newTaskName) => {
@@ -37,34 +39,43 @@ class Home extends Component {
   }
 
   render() {
+    const taskFormPlaceholder = 'Enter Tasks Name...';
+    const projectFormPlaceholder = 'Enter Project Name...';
+    const listOfProjects = this.props.projects.map((project) => {
+      return <li key={project.id}>
+        <Project {...project}
+                 placeholder={projectFormPlaceholder}
+                 onUpdate={this.handleUpdateProject}
+                 onDelete={this.handleDeleteProject}>
+          <ul>
+            { project.tasks.map((task) =>
+              <li key={task.id}>
+                <Task {...task}
+                      placeholder={taskFormPlaceholder}
+                      onUpdate={this.handleUpdateTask}
+                      onDelete={this.handleDeleteTask}/>
+              </li>
+            ) }
+
+            <li>
+              <NewTask onSubmit={this.handleCreateTask(project.id)}
+                       placeholder={taskFormPlaceholder}
+                       alwaysShowControls={true}/>
+            </li>
+          </ul>
+        </Project>
+      </li>
+    });
+
     return (
       <div>
         <ul>
-        { this.props.projects.map(function (project) {
-          let tasks = filter(this.props.tasks, (task) =>
-            project.taskIds.indexOf(task.id) >= 0
-          );
-
-          return <li key={project.id}>
-            <Project {...project}
-                     onUpdate={this.handleUpdateProject}
-                     onDelete={this.handleDeleteProject}>
-              <ul>
-                { tasks.map((task) =>
-                  <li key={task.id}>
-                    <Task {...task}
-                          onUpdateTask={this.handleUpdateTask}
-                          onDeleteTask={this.handleDeleteTask}/>
-                  </li>
-                ) }
-
-                <li><NewTask projectId={project.id} onSubmit={this.handleCreateTask}/></li>
-              </ul>
-            </Project>
+          { listOfProjects }
+          <li>
+            <NewProject onSubmit={this.handleCreateProject}
+                        placeholder={projectFormPlaceholder}
+                        alwaysShowControls={true}/>
           </li>
-        }.bind(this)) }
-
-        <li><NewProject onSubmit={this.handleCreateProject}/></li>
         </ul>
       </div>
     );
@@ -72,7 +83,14 @@ class Home extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
-  return state;
+  const newState = {};
+  newState.projects = state.projects.map((project) => {
+    const tasks = filter(state.tasks, (task) =>
+      project.taskIds.indexOf(task.id) >= 0
+    );
+    return {...project, tasks: tasks};
+  });
+  return newState;
 }
 
 export default connect(mapStateToProps)(Home);
