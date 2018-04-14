@@ -26,11 +26,23 @@ class Item extends Component {
     this.props.onDelete(this.props.id)
   }
 
+  handleToggleCompletion = () => {
+    this.props.onCompletionToggle(this.props.id)
+  }
+
   render() {
+    const checkboxId = `${this.props.id}`;
+    const textDecoration = this.props.isDone ? 'line-through' : 'none';
     const item = <div>
-      <span>
-        {this.props.name}
-      </span>
+      { !!this.props.onCompletionToggle && <input type='checkbox'
+                                                  id={checkboxId}
+                                                  defaultChecked={this.props.isDone}
+                                                  onChange={this.handleToggleCompletion} /> }
+      <label htmlFor={checkboxId}>
+        <span style={{textDecoration: textDecoration}}>
+          {this.props.name}
+        </span>
+      </label>
       <button onClick={this.handleEdit}>Edit</button>
       <button onClick={this.handleDelete}>Delete</button>
     </div>

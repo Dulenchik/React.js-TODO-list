@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { ADD_PROJECT, DELETE_PROJECT, UPDATE_PROJECT } from './../../js/actions/projects';
-import { ADD_TASK, DELETE_TASK, UPDATE_TASK } from './../../js/actions/tasks';
+import { ADD_TASK, DELETE_TASK, UPDATE_TASK, TOGGLE_TASK_COMPLETION } from './../../js/actions/tasks';
 
 const projectsList = [
   { id: 1, name: 'Setup Rails', taskIds: [12, 17, 23] },
@@ -56,6 +56,14 @@ function tasks(state = tasksList, action) {
       return state.map((task) => {
         if (task.id === action.id) {
           return Object.assign({}, task, { name: action.name })
+        } else {
+          return task
+        }
+      });
+    case TOGGLE_TASK_COMPLETION:
+      return state.map((task) => {
+        if (task.id === action.id) {
+          return Object.assign({}, task, { isDone: !task.isDone })
         } else {
           return task
         }

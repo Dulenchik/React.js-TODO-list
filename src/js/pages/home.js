@@ -9,7 +9,7 @@ import { default as Task } from './../components/shared/Item';
 import { default as NewTask } from './../components/shared/Form';
 
 import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
-import { addTask, deleteTask, updateTask } from './../../js/actions/tasks';
+import { addTask, deleteTask, updateTask, toggleTaskCompletion } from './../../js/actions/tasks';
 
 class Home extends Component {
   handleCreateProject = (newProjectName) => {
@@ -38,6 +38,10 @@ class Home extends Component {
     this.props.dispatch(deleteTask(id))
   }
 
+  handleToggleTaskCompletion = (id) => {
+    this.props.dispatch(toggleTaskCompletion(id))
+  }
+
   render() {
     const taskFormPlaceholder = 'Enter Tasks Name...';
     const projectFormPlaceholder = 'Enter Project Name...';
@@ -53,7 +57,8 @@ class Home extends Component {
                 <Task {...task}
                       placeholder={taskFormPlaceholder}
                       onUpdate={this.handleUpdateTask}
-                      onDelete={this.handleDeleteTask}/>
+                      onDelete={this.handleDeleteTask}
+                      onCompletionToggle={this.handleToggleTaskCompletion}/>
               </li>
             ) }
 
