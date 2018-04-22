@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { filter } from 'lodash';
+import { filter, orderBy } from 'lodash';
 
 import { default as Project } from './../components/shared/Item';
 import { default as NewProject } from './../components/shared/Form';
@@ -9,7 +9,7 @@ import { default as Task } from './../components/shared/Item';
 import { default as NewTask } from './../components/shared/Form';
 
 import { addProject, deleteProject, updateProject } from './../../js/actions/projects';
-import { addTask, deleteTask, updateTask, toggleTaskCompletion } from './../../js/actions/tasks';
+import { addTask, deleteTask, updateTask, toggleTaskCompletion, increaseTaskPriority, decreaseTaskPriority } from './../../js/actions/tasks';
 
 class Home extends Component {
   handleCreateProject = (newProjectName) => {
@@ -42,6 +42,14 @@ class Home extends Component {
     this.props.dispatch(toggleTaskCompletion(id))
   }
 
+  handleIncreasePriority = (id) => {
+    this.props.dispatch(increaseTaskPriority(id))
+  }
+
+  handleDecreasePriority = (id) => {
+    this.props.dispatch(decreaseTaskPriority(id))
+  }
+
   render() {
     const taskFormPlaceholder = 'Enter Tasks Name...';
     const projectFormPlaceholder = 'Enter Project Name...';
@@ -56,6 +64,8 @@ class Home extends Component {
               <li key={task.id}>
                 <Task {...task}
                       placeholder={taskFormPlaceholder}
+                      onMoveUp={this.handleIncreasePriority}
+                      onMoveDown={this.handleDecreasePriority}
                       onUpdate={this.handleUpdateTask}
                       onDelete={this.handleDeleteTask}
                       onCompletionToggle={this.handleToggleTaskCompletion}/>
@@ -90,9 +100,9 @@ class Home extends Component {
 function mapStateToProps(state, ownProps) {
   const newState = {};
   newState.projects = state.projects.map((project) => {
-    const tasks = filter(state.tasks, (task) =>
-      project.taskIds.indexOf(task.id) >= 0
-    );
+    const tasks = orderBy(filter(state.tasks, (task) =>
+      task.projectId === project.id
+    ), 'position', ['asc']);
     return {...project, tasks: tasks};
   });
   return newState;

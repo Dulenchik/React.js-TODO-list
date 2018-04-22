@@ -1,22 +1,23 @@
 import { combineReducers } from 'redux';
+import { find, filter, orderBy } from 'lodash';
 import { ADD_PROJECT, DELETE_PROJECT, UPDATE_PROJECT } from './../../js/actions/projects';
-import { ADD_TASK, DELETE_TASK, UPDATE_TASK, TOGGLE_TASK_COMPLETION } from './../../js/actions/tasks';
+import { ADD_TASK, DELETE_TASK, UPDATE_TASK, TOGGLE_TASK_COMPLETION, INCREASE_TASK_PRIORITY, DECREASE_TASK_PRIORITY } from './../../js/actions/tasks';
 
 const projectsList = [
-  { id: 1, name: 'Setup Rails', taskIds: [12, 17, 23] },
-  { id: 2, name: 'Setup React + Redux', taskIds: [39, 37] },
-  { id: 3, name: 'Enjoy!', taskIds: [5] }
+  { id: 1, name: 'Setup Rails' },
+  { id: 2, name: 'Setup React + Redux' },
+  { id: 3, name: 'Enjoy!' }
 ]
 
 const tasksList = [
-  { id: 39, name: 'Apply Redux', position: 1, isDone: false },
-  { id: 37, name: 'Learn Redux', position: 0, isDone: true },
+  { id: 39, name: 'Apply Redux', position: 1, isDone: false, projectId: 2 },
+  { id: 37, name: 'Learn Redux', position: 0, isDone: true, projectId: 2 },
 
-  { id: 5, name: 'Take a Coffee', position: 0, isDone: false },
+  { id: 5, name: 'Take a Coffee', position: 0, isDone: false, projectId: 3 },
 
-  { id: 12, name: 'Generate App', position: 0, isDone: true },
-  { id: 17, name: 'Implement Business Logic', position: 1, isDone: true },
-  { id: 23, name: 'Write specs', position: 2, isDone: false }
+  { id: 12, name: 'Generate App', position: 0, isDone: true, projectId: 1 },
+  { id: 17, name: 'Implement Business Logic', position: 1, isDone: true, projectId: 1 },
+  { id: 23, name: 'Write specs', position: 2, isDone: false, projectId: 1 }
 ]
 
 function projects(state = projectsList, action) {
@@ -33,23 +34,32 @@ function projects(state = projectsList, action) {
           return project
         }
       });
-    case ADD_TASK:
-      return state.map((project) => {
-        if (project.id === action.projectId) {
-          return Object.assign({}, project, { taskIds: project.taskIds.concat(action.id) })
-        } else {
-          return project
-        }
-      })
     default:
       return state;
   }
 };
 
+function reorder(state, action, indexChanger) {
+  let currentTask = find(state, (task) => { return task.id === action.id })
+  let sameProjectTasks = filter(state, (task) => { return task.projectId === currentTask.projectId })
+  let orderedTasks = orderBy(sameProjectTasks, 'position', ['asc'])
+  let anotherTask = orderedTasks[orderedTasks.indexOf(currentTask) + indexChanger]
+  if (!anotherTask) { return state }
+  return state.map((task) => {
+    if (task.id === currentTask.id) {
+      return Object.assign({}, task, { position: anotherTask.position })
+    } else if (task.id === anotherTask.id) {
+      return Object.assign({}, task, { position: currentTask.position })
+    } else {
+      return task
+    }
+  });
+};
+
 function tasks(state = tasksList, action) {
   switch (action.type) {
     case ADD_TASK:
-      return state.concat({ id: action.id, name: action.name, isDone: false, position: state.length + 1 })
+      return state.concat({ id: action.id, name: action.name, isDone: false, position: state.length + 1, projectId: action.projectId })
     case DELETE_TASK:
       return state.filter(task => task.id !== action.id );
     case UPDATE_TASK:
@@ -68,6 +78,10 @@ function tasks(state = tasksList, action) {
           return task
         }
       });
+    case INCREASE_TASK_PRIORITY:
+      return reorder(state, action, -1)
+    case DECREASE_TASK_PRIORITY:
+      return reorder(state, action, 1)
     default:
       return state;
   }

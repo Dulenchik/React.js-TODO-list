@@ -30,10 +30,24 @@ class Item extends Component {
     this.props.onCompletionToggle(this.props.id)
   }
 
+  handleIncreasePriority = () => {
+    this.props.onMoveUp(this.props.id)
+  }
+
+  handleDecreasePriority = () => {
+    this.props.onMoveDown(this.props.id)
+  }
+
   render() {
     const checkboxId = `${this.props.id}`;
     const textDecoration = this.props.isDone ? 'line-through' : 'none';
     const item = <div>
+      { !!this.props.onMoveUp && <button onClick={this.handleIncreasePriority}>
+                                   <span>Move Up</span>
+                                 </button> }
+      { !!this.props.onMoveDown && <button onClick={this.handleDecreasePriority}>
+                                     <span>Move Down</span>
+                                   </button> }
       { !!this.props.onCompletionToggle && <input type='checkbox'
                                                   id={checkboxId}
                                                   defaultChecked={this.props.isDone}
