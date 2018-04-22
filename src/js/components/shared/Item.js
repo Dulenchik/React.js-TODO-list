@@ -42,12 +42,17 @@ class Item extends Component {
     const checkboxId = `${this.props.id}`;
     const textDecoration = this.props.isDone ? 'line-through' : 'none';
     const item = <div>
-      { !!this.props.onMoveUp && <button onClick={this.handleIncreasePriority}>
-                                   <span>Move Up</span>
-                                 </button> }
-      { !!this.props.onMoveDown && <button onClick={this.handleDecreasePriority}>
-                                     <span>Move Down</span>
-                                   </button> }
+      { !!this.props.onMoveUp && !!this.props.onMoveDown &&
+        <span>
+          <button onClick={this.handleIncreasePriority}>
+            <span>Up</span>
+          </button>
+          <br />
+          <button onClick={this.handleDecreasePriority}>
+            <span>Down</span>
+          </button>
+        </span>
+      }
       { !!this.props.onCompletionToggle && <input type='checkbox'
                                                   id={checkboxId}
                                                   defaultChecked={this.props.isDone}

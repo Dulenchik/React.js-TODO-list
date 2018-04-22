@@ -23,7 +23,7 @@ const tasksList = [
 function projects(state = projectsList, action) {
   switch (action.type) {
     case ADD_PROJECT:
-      return state.concat({ id: state.length + 1, name: action.name, taskIds: [] })
+      return state.concat({ id: state.length + 1, name: action.name })
     case DELETE_PROJECT:
       return state.filter(project => project.id !== action.id );
     case UPDATE_PROJECT:
@@ -58,6 +58,8 @@ function reorder(state, action, indexChanger) {
 
 function tasks(state = tasksList, action) {
   switch (action.type) {
+    case DELETE_PROJECT:
+      return state.filter(task => task.projectId !== action.id );
     case ADD_TASK:
       return state.concat({ id: action.id, name: action.name, isDone: false, position: state.length + 1, projectId: action.projectId })
     case DELETE_TASK:

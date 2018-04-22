@@ -12,42 +12,19 @@ import { addProject, deleteProject, updateProject } from './../../js/actions/pro
 import { addTask, deleteTask, updateTask, toggleTaskCompletion, increaseTaskPriority, decreaseTaskPriority } from './../../js/actions/tasks';
 
 class Home extends Component {
-  handleCreateProject = (newProjectName) => {
-    this.props.dispatch(addProject(newProjectName))
-  }
-
-  handleUpdateProject = (id, newProjectName) => {
-    this.props.dispatch(updateProject(id, newProjectName))
-  }
-
-  handleDeleteProject = (id) => {
-    this.props.dispatch(deleteProject(id))
-  }
+  handleCreateProject = (newProjectName) => { this.props.dispatch(addProject(newProjectName)) }
+  handleUpdateProject = (id, newProjectName) => { this.props.dispatch(updateProject(id, newProjectName)) }
+  handleDeleteProject = (id) => { this.props.dispatch(deleteProject(id)) }
+  handleUpdateTask = (id, newTaskName) => { this.props.dispatch(updateTask(id, newTaskName)) }
+  handleDeleteTask = (id) => { this.props.dispatch(deleteTask(id)) }
+  handleToggleTaskCompletion = (id) => { this.props.dispatch(toggleTaskCompletion(id)) }
+  handleIncreasePriority = (id) => { this.props.dispatch(increaseTaskPriority(id)) }
+  handleDecreasePriority = (id) => { this.props.dispatch(decreaseTaskPriority(id)) }
 
   handleCreateTask = (projectId) => {
     return (newTaskName) => {
       this.props.dispatch(addTask(newTaskName, projectId))
     };
-  }
-
-  handleUpdateTask = (id, newTaskName) => {
-    this.props.dispatch(updateTask(id, newTaskName))
-  }
-
-  handleDeleteTask = (id) => {
-    this.props.dispatch(deleteTask(id))
-  }
-
-  handleToggleTaskCompletion = (id) => {
-    this.props.dispatch(toggleTaskCompletion(id))
-  }
-
-  handleIncreasePriority = (id) => {
-    this.props.dispatch(increaseTaskPriority(id))
-  }
-
-  handleDecreasePriority = (id) => {
-    this.props.dispatch(decreaseTaskPriority(id))
   }
 
   render() {
