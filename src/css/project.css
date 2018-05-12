@@ -1,0 +1,23 @@
+.accordion.ui .title.active .segment {
+  background: rgb(225, 231, 243);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-width: 0;
+}
+
+.accordion.ui .content.active .segments {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.accordion.ui .title {
+  padding-bottom: 0 !important;
+}
+
+.accordion.ui .content {
+  padding-top: 0 !important;
+}
+
+.accordion.ui {
+  margin-bottom: 1rem;
+}

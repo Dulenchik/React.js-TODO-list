@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import { default as CommentsModal } from "./../components/comments/Modal"
 import ProjectsList from "./../components/ProjectsList"
-
-import { addTask } from "./../../js/actions/tasks"
+import { Header } from "semantic-ui-react"
 
 class Home extends Component {
   constructor(props) {
@@ -18,15 +17,10 @@ class Home extends Component {
     this.setState({ commentsTaskId: null })
   }
 
-  handleCreateTask = projectId => {
-    return newTaskName => {
-      this.props.dispatch(addTask(newTaskName, projectId))
-    }
-  }
-
   render() {
     return (
       <div>
+        <Header>Projects</Header>
         <ProjectsList showCommentsFor={this.showCommentsFor} />
 
         {this.state.commentsTaskId && (

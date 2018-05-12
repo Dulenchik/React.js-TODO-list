@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Button, Grid } from "semantic-ui-react"
+import { Button, Grid, Popup, Form } from "semantic-ui-react"
 import { default as Edit } from "./Form"
 
 class Item extends Component {
@@ -46,17 +46,11 @@ class Item extends Component {
           </Grid.Column>
 
           <Grid.Column width={11}>
-            <input
-              type="checkbox"
-              id={checkboxId}
-              defaultChecked={this.props.isDone}
+            <Form.Checkbox
+              checked={this.props.isDone}
               onChange={this.handleToggleCompletion}
+              label={this.props.name}
             />
-            <label htmlFor={checkboxId}>
-              <span style={{ textDecoration: textDecoration }}>
-                {this.props.name}
-              </span>
-            </label>
           </Grid.Column>
 
           <Grid.Column width={4} textAlign={"right"}>
@@ -75,7 +69,7 @@ class Item extends Component {
     )
 
     return (
-      <div>
+      <div className="task">
         {this.state.isEditable ? (
           <Edit
             name={this.props.name}
