@@ -5,7 +5,7 @@ export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
 export const INCREASE_TASK_PRIORITY = "INCREASE_TASK_PRIORITY"
 export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
 
-export function addTask(newTaskName, projectId) {
+export function addTask(projectId, newTaskName) {
   return {
     id: Math.round(Math.random() * 100),
     type: ADD_TASK,

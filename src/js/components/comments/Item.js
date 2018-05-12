@@ -1,24 +1,28 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Button, Glyphicon } from "react-bootstrap"
+import { Button, Image, List } from "semantic-ui-react"
 
 const Item = props => {
   const { id, text, createdOn, image, onDelete } = props
 
   return (
-    <li className="text-left">
-      <div>
+    <List.Item>
+      <List.Header>
         <span>{createdOn}</span>
 
-        <Button onClick={() => onDelete(id)}>
-          <Glyphicon glyph="trash" />
-        </Button>
-      </div>
+        <Button
+          size="mini"
+          compact
+          basic
+          onClick={() => onDelete(id)}
+          icon="trash"
+        />
+      </List.Header>
 
-      <p>{text}</p>
+      <List.Description>{text}</List.Description>
 
-      {image && <img src={image} widht={120} height={80} alt="Commnet" />}
-    </li>
+      {image && <Image src={image} size="small" />}
+    </List.Item>
   )
 }
 

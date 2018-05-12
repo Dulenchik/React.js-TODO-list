@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { FormControl, Button } from "react-bootstrap"
+import { Form as UIForm } from "semantic-ui-react"
 
 class Form extends React.Component {
   constructor(props) {
@@ -22,36 +22,35 @@ class Form extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleCreateComment}>
-        <FormControl
-          componentClass="textarea"
+      <UIForm onSubmit={this.handleCreateComment}>
+        <UIForm.TextArea
           placeholder="Enter Your Comment"
           value={this.state.value}
           onChange={this.onChange}
         />
 
-        <div className="text-right">
-          <Button type="submit" bsSize="large" bsStyle="primary">
+        <UIForm.Group>
+          <UIForm.Button size="large" type="submit" color="blue">
             Save
-          </Button>
+          </UIForm.Button>
 
-          <Button
+          <UIForm.Button
+            basic
+            size="large"
             type="button"
-            bsSize="large"
-            bsStyle="link"
             onClick={this.props.onClose}
           >
             Cancel
-          </Button>
-        </div>
-      </form>
+          </UIForm.Button>
+        </UIForm.Group>
+      </UIForm>
     )
   }
 }
 
 Form.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onCreate: PropTypes.string.isRequired
+  onCreate: PropTypes.func.isRequired
 }
 
 export default Form

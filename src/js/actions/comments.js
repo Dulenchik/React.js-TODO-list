@@ -1,13 +1,13 @@
-export const ADD_COMMENT = 'ADD_COMMENT'
-export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const ADD_COMMENT = "ADD_COMMENT"
+export const DELETE_COMMENT = "DELETE_COMMENT"
 
-export function addComment(newCommentText, taskId) {
+export function addComment(taskId, newCommentText) {
   return {
     type: ADD_COMMENT,
     id: Math.round(Math.random() * 100),
     text: newCommentText,
     taskId: taskId,
-    createdOn: '05/05/2018'
+    createdOn: "05/05/2018"
   }
 }
 

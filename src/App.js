@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { createStore } from "redux"
 import { Provider } from "react-redux"
 import { BrowserRouter as Router, Route } from "react-router-dom"
-import { Grid } from "react-bootstrap"
+import { Container } from "semantic-ui-react"
 
 import reducer from "./js/reducers/index"
 import NavBar from "./js/components/shared/NavBar"
@@ -21,11 +21,11 @@ class App extends Component {
           <div>
             <NavBar />
 
-            <Grid>
+            <Container text>
               <Route exact path="/" component={Home} />
               <Route exact path="/sign_in" component={SignIn} />
               <Route exact path="/sign_up" component={SignUp} />
-            </Grid>
+            </Container>
           </div>
         </Router>
       </Provider>

@@ -3,53 +3,54 @@ import { connect } from "react-redux"
 import { filter } from "lodash"
 import Form from "./Form"
 import Item from "./Item"
-import { Modal as BsModal } from "react-bootstrap"
 import { addComment, deleteComment } from "./../../actions/comments"
+import { Modal as ModalUI, List, Divider } from "semantic-ui-react"
 
 class Modal extends Component {
-  handleCreateComment = newCommentText => {
-    this.props.dispatch(addComment(newCommentText, this.props.taskId))
-  }
-
-  handleDeleteComment = commentId => {
-    this.props.dispatch(deleteComment(commentId))
-  }
-
   render() {
+    const inlineStyle = {
+      marginTop: "3em !important",
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
     return (
-      <BsModal show={!!this.props.taskId} onHide={this.props.onClose}>
-        <BsModal.Header closeButton>
-          <BsModal.Title>Add comment</BsModal.Title>
-        </BsModal.Header>
+      <ModalUI
+        open={!!this.props.taskId}
+        onClose={this.props.onClose}
+        style={inlineStyle}
+        closeIcon
+      >
+        <ModalUI.Header>Add comment</ModalUI.Header>
 
-        <BsModal.Body>
-          <Form
-            onCreate={this.handleCreateComment}
-            onClose={this.props.onClose}
-          />
-        </BsModal.Body>
+        <ModalUI.Content>
+          <Form onCreate={this.props.onCreate} onClose={this.props.onClose} />
+        </ModalUI.Content>
 
-        <BsModal.Footer>
-          <ul>
+        <Divider />
+
+        <ModalUI.Content>
+          <List>
             {this.props.comments.map(comment => (
               <Item
                 {...comment}
                 key={comment.id}
-                onDelete={this.handleDeleteComment}
+                onDelete={this.props.onDelete}
               />
             ))}
-          </ul>
-        </BsModal.Footer>
-      </BsModal>
+          </List>
+        </ModalUI.Content>
+      </ModalUI>
     )
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const comments = filter(state.comments, item => {
-    return item.taskId === ownProps.taskId
-  })
-  return { ...ownProps, comments: comments }
-}
+const mapStateToProps = (state, ownProps) => ({
+  comments: filter(state.comments, item => item.taskId === ownProps.taskId)
+})
 
-export default connect(mapStateToProps)(Modal)
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onCreate: text => dispatch(addComment(ownProps.taskId, text)),
+  onDelete: id => dispatch(deleteComment(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal)

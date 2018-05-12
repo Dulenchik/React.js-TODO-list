@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Button, FormControl } from "react-bootstrap"
+import { Form as UIForm } from "semantic-ui-react"
 
 class Form extends Component {
   constructor(props) {
@@ -37,19 +37,22 @@ class Form extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <FormControl
+      <UIForm onSubmit={this.handleSubmit}>
+        <UIForm.Input
           type="text"
           placeholder={this.props.placeholder}
           value={this.state.value}
           onChange={this.handleChange}
+          fluid
         />
 
-        {this.state.isEdit && <Button type="submit">Save</Button>}
         {this.state.isEdit && (
-          <Button onClick={this.handleCancel}>Cancel</Button>
+          <UIForm.Group>
+            <UIForm.Button type="submit">Save</UIForm.Button>
+            <UIForm.Button onClick={this.handleCancel}>Cancel</UIForm.Button>
+          </UIForm.Group>
         )}
-      </form>
+      </UIForm>
     )
   }
 }
