@@ -23,7 +23,15 @@ const projectsList = [
 
 const tasksList = [
   { id: 39, name: "Apply Redux", position: 1, isDone: false, projectId: 2 },
-  { id: 37, name: "Learn Redux", position: 0, isDone: true, projectId: 2 },
+  {
+    id: 37,
+    name: "Learn Redux",
+    position: 0,
+    isDone: true,
+    projectId: 2,
+    dueDate: "29/05/2018",
+    dueTime: "12:20"
+  },
 
   { id: 5, name: "Take a Coffee", position: 0, isDone: false, projectId: 3 },
 
@@ -33,7 +41,9 @@ const tasksList = [
     name: "Implement Business Logic",
     position: 1,
     isDone: true,
-    projectId: 1
+    projectId: 1,
+    dueDate: "23/04/2018",
+    dueTime: "17:30"
   },
   { id: 23, name: "Write specs", position: 2, isDone: false, projectId: 1 }
 ]
@@ -176,7 +186,7 @@ function tasks(state = tasksList, action) {
     case UPDATE_TASK:
       return state.map(task => {
         if (task.id === action.id) {
-          return Object.assign({}, task, { name: action.name })
+          return Object.assign({}, task, { ...action.payload })
         } else {
           return task
         }

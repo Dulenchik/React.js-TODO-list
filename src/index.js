@@ -1,4 +1,5 @@
 import "semantic-ui-css/semantic.min.css"
+import "react-datetime/css/react-datetime.css"
 import "./css/task.css"
 import "./css/project.css"
 

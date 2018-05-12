@@ -1,8 +1,9 @@
 import React, { Component } from "react"
-import { Button, Grid, Popup, Form } from "semantic-ui-react"
+import { Button, Grid, Popup, Form, Item } from "semantic-ui-react"
 import { default as Edit } from "./Form"
+import DeadlineForm from "./DeadlineForm"
 
-class Item extends Component {
+class Task extends Component {
   constructor(props) {
     super(props)
 
@@ -27,8 +28,6 @@ class Item extends Component {
   }
 
   render() {
-    const checkboxId = `${this.props.id}`
-    const textDecoration = this.props.isDone ? "line-through" : "none"
     const item = (
       <Grid>
         <Grid.Row>
@@ -46,18 +45,45 @@ class Item extends Component {
           </Grid.Column>
 
           <Grid.Column width={11}>
-            <Form.Checkbox
-              checked={this.props.isDone}
-              onChange={this.handleToggleCompletion}
-              label={this.props.name}
+            <Item
+              description={
+                <Form.Checkbox
+                  checked={this.props.isDone}
+                  onChange={this.handleToggleCompletion}
+                  label={this.props.name}
+                />
+              }
+              extra={
+                !!this.props.dueDate &&
+                !!this.props.dueTime &&
+                `${this.props.dueDate} ${this.props.dueTime}`
+              }
             />
           </Grid.Column>
 
           <Grid.Column width={4} textAlign={"right"}>
             <Button.Group size="mini" basic>
-              <Button onClick={this.showCommnets} icon="comment" />
+              <Button
+                onClick={this.showCommnets}
+                icon="comment"
+                label={!!this.props.commentsCount && this.props.commentsCount}
+                labelPosition="left"
+              />
 
-              <Button icon="clock" />
+              <Popup
+                basic
+                on="click"
+                position="bottom right"
+                trigger={<Button icon="clock" />}
+                content={
+                  <DeadlineForm
+                    taskId={this.props.id}
+                    date={this.props.dueDate}
+                    time={this.props.dueTime}
+                    onSubmit={this.props.onSetDueDate}
+                  />
+                }
+              />
 
               <Button onClick={this.handleEdit} icon="pencil" />
 
@@ -88,4 +114,4 @@ class Item extends Component {
   }
 }
 
-export default Item
+export default Task

@@ -1,3 +1,9 @@
 .task input:checked + label {
   text-decoration: line-through;
 }
+
+.task .extra {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}

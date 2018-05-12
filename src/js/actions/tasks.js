@@ -21,10 +21,10 @@ export function deleteTask(id) {
   }
 }
 
-export function updateTask(id, newTaskName) {
+export function updateTask(id, payload) {
   return {
     type: UPDATE_TASK,
-    name: newTaskName,
+    payload: payload,
     id: id
   }
 }
