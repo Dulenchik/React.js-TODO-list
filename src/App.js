@@ -1,17 +1,21 @@
 import React, { Component } from "react"
-import { createStore } from "redux"
+import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
+import createSagaMiddleware from "redux-saga"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import { Container } from "semantic-ui-react"
 
 import reducer from "./js/reducers/index"
+import saga from "./js/saga"
 import NavBar from "./js/components/shared/NavBar"
 
 import Home from "./js/pages/Home"
 import SignIn from "./js/pages/SignIn"
 import SignUp from "./js/pages/SignUp"
 
-let store = createStore(reducer)
+const sagaMiddleware = createSagaMiddleware()
+const store = createStore(reducer, applyMiddleware(sagaMiddleware))
+sagaMiddleware.run(saga)
 
 class App extends Component {
   render() {

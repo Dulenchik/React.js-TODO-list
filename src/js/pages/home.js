@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { default as CommentsModal } from "./../components/comments/Modal"
 import ProjectsList from "./../components/ProjectsList"
+import FlashMessagesList from "./../components/FlashMessagesList"
 import { Header } from "semantic-ui-react"
 
 class Home extends Component {
@@ -20,6 +21,7 @@ class Home extends Component {
   render() {
     return (
       <div>
+        <FlashMessagesList />
         <Header>Projects</Header>
         <ProjectsList showCommentsFor={this.showCommentsFor} />
 

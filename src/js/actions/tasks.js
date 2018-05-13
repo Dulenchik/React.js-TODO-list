@@ -1,9 +1,11 @@
 export const ADD_TASK = "ADD_TASK"
 export const DELETE_TASK = "DELETE_TASK"
 export const UPDATE_TASK = "UPDATE_TASK"
-export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
 export const INCREASE_TASK_PRIORITY = "INCREASE_TASK_PRIORITY"
 export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
+
+export const TOGGLE_TASK_COMPLETION_REQUEST = "TOGGLE_TASK_COMPLETION_REQUEST"
+export const TOGGLE_TASK_COMPLETION_SUCCESS = "TOGGLE_TASK_COMPLETION_SUCCESS"
 
 export function addTask(projectId, newTaskName) {
   return {
@@ -31,7 +33,7 @@ export function updateTask(id, payload) {
 
 export function toggleTaskCompletion(id) {
   return {
-    type: TOGGLE_TASK_COMPLETION,
+    type: TOGGLE_TASK_COMPLETION_REQUEST,
     id: id
   }
 }

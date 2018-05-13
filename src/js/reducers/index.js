@@ -9,11 +9,15 @@ import {
   ADD_TASK,
   DELETE_TASK,
   UPDATE_TASK,
-  TOGGLE_TASK_COMPLETION,
+  TOGGLE_TASK_COMPLETION_SUCCESS,
   INCREASE_TASK_PRIORITY,
   DECREASE_TASK_PRIORITY
 } from "./../../js/actions/tasks"
 import { ADD_COMMENT, DELETE_COMMENT } from "./../../js/actions/comments"
+import {
+  ADD_FLASH_MESSAGE,
+  DELETE_FLASH_MESSAGE
+} from "./../../js/actions/flashMessages"
 
 const projectsList = [
   { id: 1, name: "Setup Rails" },
@@ -191,7 +195,7 @@ function tasks(state = tasksList, action) {
           return task
         }
       })
-    case TOGGLE_TASK_COMPLETION:
+    case TOGGLE_TASK_COMPLETION_SUCCESS:
       return state.map(task => {
         if (task.id === action.id) {
           return Object.assign({}, task, { isDone: !task.isDone })
@@ -224,10 +228,27 @@ function comments(state = commentsList, action) {
   }
 }
 
+function flashMessages(state = [], action) {
+  switch (action.type) {
+    case ADD_FLASH_MESSAGE:
+      return state.concat({
+        id: action.id,
+        type: action.messageType,
+        exclamation: action.exclamation,
+        text: action.text
+      })
+    case DELETE_FLASH_MESSAGE:
+      return state.filter(flashMessage => flashMessage.id !== action.id)
+    default:
+      return state
+  }
+}
+
 const reducer = combineReducers({
   projects,
   tasks,
-  comments
+  comments,
+  flashMessages
 })
 
 export default reducer
