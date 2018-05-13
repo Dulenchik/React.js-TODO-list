@@ -42,7 +42,7 @@ const TasksList = props => {
         <NewTask
           onSubmit={props.handleCreateTask}
           placeholder={taskFormPlaceholder}
-          alwaysShowControls={true}
+          alwaysShowControls={false}
         />
       </Segment>
     </Segment.Group>

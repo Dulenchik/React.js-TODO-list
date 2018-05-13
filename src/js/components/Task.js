@@ -105,7 +105,7 @@ class Task extends Component {
             placeholder={this.props.placeholder}
             onSubmit={this.handleUpdate}
             onCancel={this.handleCancel}
-            alwaysShowControls={false}
+            alwaysShowControls={true}
           />
         ) : (
           item

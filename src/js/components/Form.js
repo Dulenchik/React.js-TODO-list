@@ -6,31 +6,41 @@ class Form extends Component {
     super(props)
 
     this.state = {
-      isEdit: !props.alwaysShowControls,
+      showControls: props.alwaysShowControls,
       value: this.props.name || ""
+    }
+  }
+
+  cancel = () => {
+    const newState = { value: "" }
+    if (!this.props.alwaysShowControls) {
+      newState.showControls = false
+    }
+    this.setState(newState)
+    if (this.props.onCancel) {
+      this.props.onCancel()
     }
   }
 
   handleSubmit = e => {
     e.preventDefault()
+    if (!this.state.value) {
+      return
+    }
     this.props.onSubmit(this.state.value)
-    this.handleCancel(e)
+    this.cancel()
   }
 
   handleCancel = e => {
     e.preventDefault()
-    this.setState({ value: "" })
-    if (this.props.onCancel) {
-      this.props.onCancel()
-    }
-    this.handleChange(e)
+    this.cancel()
   }
 
   handleChange = e => {
     const value = e.target.value
     const newState = { value: value }
-    if (this.props.alwaysShowControls) {
-      newState.isEdit = !!value
+    if (!this.props.alwaysShowControls) {
+      newState.showControls = !!value
     }
     this.setState(newState)
   }
@@ -46,7 +56,7 @@ class Form extends Component {
           fluid
         />
 
-        {this.state.isEdit && (
+        {this.state.showControls && (
           <UIForm.Group>
             <UIForm.Button type="submit">Save</UIForm.Button>
             <UIForm.Button onClick={this.handleCancel}>Cancel</UIForm.Button>

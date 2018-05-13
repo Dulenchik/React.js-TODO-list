@@ -32,7 +32,7 @@ const ProjectsList = props => {
       <NewProject
         onSubmit={props.onCreate}
         placeholder={projectFormPlaceholder}
-        alwaysShowControls={true}
+        alwaysShowControls={false}
       />
     </div>
   )
