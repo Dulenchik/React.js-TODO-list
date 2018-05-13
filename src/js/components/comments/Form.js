@@ -27,6 +27,7 @@ class Form extends React.Component {
           placeholder="Enter Your Comment"
           value={this.state.value}
           onChange={this.onChange}
+          autoHeight
         />
 
         <UIForm.Group>

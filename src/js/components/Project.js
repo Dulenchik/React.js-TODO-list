@@ -1,12 +1,12 @@
 import React, { Component } from "react"
-import { Button, Grid, Icon, Segment } from "semantic-ui-react"
+import { Button, Grid, Icon, Segment, Confirm } from "semantic-ui-react"
 import { default as Edit } from "./Form"
 
 class Project extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { isEditable: false }
+    this.state = { isEditable: false, showConfirm: false }
   }
 
   handleEdit = e => {
@@ -23,6 +23,7 @@ class Project extends Component {
   }
 
   render() {
+    const { name } = { ...this.props }
     const item = (
       <Segment>
         <Grid>
@@ -32,13 +33,16 @@ class Project extends Component {
             </Grid.Column>
 
             <Grid.Column width={11}>
-              <span onClick={this.props.onClick}>{this.props.name}</span>
+              <span onClick={this.props.onClick}>{name}</span>
             </Grid.Column>
 
             <Grid.Column width={4} textAlign={"right"}>
               <Button.Group size="mini" basic>
                 <Button onClick={this.handleEdit} icon="pencil" />
-                <Button onClick={this.handleDelete} icon="trash" />
+                <Button
+                  onClick={() => this.setState({ showConfirm: true })}
+                  icon="trash"
+                />
               </Button.Group>
             </Grid.Column>
           </Grid.Row>
@@ -50,7 +54,7 @@ class Project extends Component {
       <div>
         {this.state.isEditable ? (
           <Edit
-            name={this.props.name}
+            name={name}
             placeholder={this.props.placeholder}
             onSubmit={this.handleUpdate}
             onCancel={this.handleCancel}
@@ -60,7 +64,18 @@ class Project extends Component {
           item
         )}
 
-        {this.props.children}
+        {!!this.state.showConfirm && (
+          <Confirm
+            size="small"
+            header={"Delete project"}
+            content={`Do you really want to delete "${name}"?`}
+            cancelButton="Cancel"
+            confirmButton="Delete"
+            open={this.state.showConfirm}
+            onCancel={() => this.setState({ showConfirm: false })}
+            onConfirm={() => this.handleDelete()}
+          />
+        )}
       </div>
     )
   }

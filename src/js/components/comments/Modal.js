@@ -8,16 +8,10 @@ import { Modal as ModalUI, List, Divider } from "semantic-ui-react"
 
 class Modal extends Component {
   render() {
-    const inlineStyle = {
-      marginTop: "3em !important",
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
     return (
       <ModalUI
         open={!!this.props.taskId}
         onClose={this.props.onClose}
-        style={inlineStyle}
         closeIcon
       >
         <ModalUI.Header>Add comment</ModalUI.Header>

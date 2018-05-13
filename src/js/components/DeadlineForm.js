@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import { Form, Grid, Header, Divider } from "semantic-ui-react"
+import { Form, Header, Divider } from "semantic-ui-react"
 import Datetime from "react-datetime"
 
 class DeadlineForm extends React.Component {

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Button, Grid, Popup, Form, Item } from "semantic-ui-react"
+import { Button, Grid, Popup, Form, Item, Confirm } from "semantic-ui-react"
 import { default as Edit } from "./Form"
 import DeadlineForm from "./DeadlineForm"
 
@@ -7,7 +7,7 @@ class Task extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { isEditable: false }
+    this.state = { isEditable: false, showConfirm: false }
   }
 
   handleEdit = e => {
@@ -28,6 +28,10 @@ class Task extends Component {
   }
 
   render() {
+    const { id, name, isDone, dueDate, dueTime, commentsCount } = {
+      ...this.props
+    }
+
     const item = (
       <Grid>
         <Grid.Row>
@@ -36,39 +40,35 @@ class Task extends Component {
               <Button
                 onClick={this.handleIncreasePriority}
                 icon="long arrow up"
+                compact
               />
               <Button
                 onClick={this.handleDecreasePriority}
                 icon="long arrow down"
+                compact
               />
             </Button.Group>
           </Grid.Column>
 
-          <Grid.Column width={11}>
+          <Grid.Column width={10}>
             <Item
               description={
                 <Form.Checkbox
-                  checked={this.props.isDone}
+                  checked={isDone}
                   onChange={this.handleToggleCompletion}
-                  label={this.props.name}
+                  label={name}
                 />
               }
-              extra={
-                !!this.props.dueDate &&
-                !!this.props.dueTime &&
-                `${this.props.dueDate} ${this.props.dueTime}`
-              }
+              extra={!!dueDate && !!dueTime && `${dueDate} ${dueTime}`}
             />
           </Grid.Column>
 
-          <Grid.Column width={4} textAlign={"right"}>
+          <Grid.Column width={5} textAlign={"right"}>
             <Button.Group size="mini" basic>
-              <Button
-                onClick={this.showCommnets}
-                icon="comment"
-                label={!!this.props.commentsCount && this.props.commentsCount}
-                labelPosition="left"
-              />
+              {!!commentsCount && (
+                <Button disabled compact content={commentsCount} />
+              )}
+              <Button onClick={this.showCommnets} icon="comment" />
 
               <Popup
                 basic
@@ -77,9 +77,9 @@ class Task extends Component {
                 trigger={<Button icon="clock" />}
                 content={
                   <DeadlineForm
-                    taskId={this.props.id}
-                    date={this.props.dueDate}
-                    time={this.props.dueTime}
+                    taskId={id}
+                    date={dueDate}
+                    time={dueTime}
                     onSubmit={this.props.onSetDueDate}
                   />
                 }
@@ -87,7 +87,10 @@ class Task extends Component {
 
               <Button onClick={this.handleEdit} icon="pencil" />
 
-              <Button onClick={this.handleDelete} icon="trash" />
+              <Button
+                onClick={() => this.setState({ showConfirm: true })}
+                icon="trash"
+              />
             </Button.Group>
           </Grid.Column>
         </Grid.Row>
@@ -98,7 +101,7 @@ class Task extends Component {
       <div className="task">
         {this.state.isEditable ? (
           <Edit
-            name={this.props.name}
+            name={name}
             placeholder={this.props.placeholder}
             onSubmit={this.handleUpdate}
             onCancel={this.handleCancel}
@@ -108,7 +111,18 @@ class Task extends Component {
           item
         )}
 
-        {this.props.children}
+        {!!this.state.showConfirm && (
+          <Confirm
+            size="small"
+            header={"Delete task"}
+            content={`Do you really want to delete "${name}"?`}
+            cancelButton="Cancel"
+            confirmButton="Delete"
+            open={this.state.showConfirm}
+            onCancel={() => this.setState({ showConfirm: false })}
+            onConfirm={() => this.handleDelete()}
+          />
+        )}
       </div>
     )
   }
