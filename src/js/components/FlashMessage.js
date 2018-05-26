@@ -17,4 +17,12 @@ const FlashMessage = props => {
   )
 }
 
+FlashMessage.propTypes = {
+  id: PropTypes.number.isRequired,
+  exclamation: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["success", "info", "warning", "error"]),
+  onClose: PropTypes.func.isRequired
+}
+
 export default FlashMessage

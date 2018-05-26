@@ -48,4 +48,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onDelete: id => dispatch(deleteProject(id))
 })
 
+ProjectsList.propTypes = {
+  projects: PropTypes.array.isRequired,
+  onCreate: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList)

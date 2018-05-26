@@ -33,4 +33,11 @@ class ExpandableList extends React.Component {
   }
 }
 
+ExpandableList.propTypes = {
+  titleElement: PropTypes.func.isRequired,
+  titleElementProps: PropTypes.object,
+  contentElement: PropTypes.func.isRequired,
+  contentElementProps: PropTypes.object
+}
+
 export default ExpandableList

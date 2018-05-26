@@ -28,4 +28,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onClose: id => dispatch(deleteFlashMessage(id))
 })
 
+FlashMessagesList.propTypes = {
+  flashMessages: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(FlashMessagesList)

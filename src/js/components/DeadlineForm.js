@@ -63,4 +63,10 @@ class DeadlineForm extends React.Component {
   }
 }
 
+DeadlineForm.propTypes = {
+  date: PropTypes.string,
+  time: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
+}
+
 export default DeadlineForm
