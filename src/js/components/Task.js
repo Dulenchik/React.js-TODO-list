@@ -7,7 +7,7 @@ class Task extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { isEditable: false, showConfirm: false }
+    this.state = { isEditable: false, showConfirm: false, isDeadlineOpen: false }
   }
 
   handleEdit = e => {
@@ -75,12 +75,15 @@ class Task extends Component {
                 on="click"
                 position="bottom right"
                 trigger={<Button icon="clock" />}
+                onOpen={() => this.setState({ isDeadlineOpen: true }) }
+                open={this.state.isDeadlineOpen}
                 content={
                   <DeadlineForm
                     taskId={id}
                     date={dueDate}
                     time={dueTime}
                     onSubmit={this.props.onSetDueDate}
+                    close={() => this.setState({ isDeadlineOpen: false }) }
                   />
                 }
               />
