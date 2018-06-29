@@ -1,11 +1,12 @@
 export const ADD_COMMENT = "ADD_COMMENT"
 export const DELETE_COMMENT = "DELETE_COMMENT"
 
-export function addComment(taskId, newCommentText) {
+export function addComment(taskId, newCommentText, fileUrl) {
   return {
     type: ADD_COMMENT,
     id: Math.round(Math.random() * 100),
     text: newCommentText,
+    image: fileUrl,
     taskId: taskId,
     createdOn: "05/05/2018"
   }

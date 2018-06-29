@@ -43,8 +43,12 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onCreate: text => dispatch(addComment(ownProps.taskId, text)),
+  onCreate: (text, fileUrl) =>
+    dispatch(addComment(ownProps.taskId, text, fileUrl)),
   onDelete: id => dispatch(deleteComment(id))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Modal)

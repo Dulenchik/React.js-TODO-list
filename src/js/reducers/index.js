@@ -218,6 +218,7 @@ function comments(state = commentsList, action) {
       return state.concat({
         id: action.id,
         text: action.text,
+        image: action.image,
         taskId: action.taskId,
         createdOn: action.createdOn
       })
