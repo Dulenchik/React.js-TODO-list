@@ -3,6 +3,9 @@ import PropTypes from "prop-types"
 import { Form as UIForm } from "semantic-ui-react"
 import Dropzone from "react-dropzone"
 
+// Max size is 10Mb
+const maxSize = 1024 * 1024 * 1024 * 10
+
 class Form extends React.Component {
   constructor(props) {
     super(props)
@@ -43,6 +46,7 @@ class Form extends React.Component {
               className="dropzone"
               accept="image/jpeg, image/png"
               multiple={false}
+              maxSize={maxSize}
               onDropAccepted={files => this.onDropAccepted(files)}
             >
               <div>Click her to select an image for upload</div>
