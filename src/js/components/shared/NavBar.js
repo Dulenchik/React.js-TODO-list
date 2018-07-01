@@ -1,24 +1,26 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import React from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { userLogout } from "./../../actions/auth"
 
-class NavBar extends Component {
-  render() {
-    return (
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-
-        <li>
-          <Link to="/sign_in">SignIn</Link>
-        </li>
-
-        <li>
-          <Link to="/sign_up">SignUp</Link>
-        </li>
-      </ul>
-    )
-  }
+const NavBar = ({ isAuthenticated, logout }) => {
+  return isAuthenticated && <button onClick={logout}>Logout</button>
 }
 
-export default NavBar
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(userLogout())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavBar)
+
+NavBar.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  logout: PropTypes.func.isRequired
+}

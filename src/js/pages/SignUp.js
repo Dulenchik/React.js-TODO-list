@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 import { Header, Divider } from "semantic-ui-react"
 import SignUpForm from "./../components/auth/SignUpForm"
 
-const SignUp = props => (
+const SignUp = ({ history }) => (
   <div>
     <Header>Sign Up</Header>
-    <SignUpForm />
+    <SignUpForm history={history} />
     <Divider hidden />
     <p>
       Already a member?<Link to="/sign_in">Sign In</Link>

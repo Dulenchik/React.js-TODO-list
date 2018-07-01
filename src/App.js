@@ -1,40 +1,47 @@
-import React, { Component } from "react"
-import { createStore, applyMiddleware } from "redux"
-import { Provider } from "react-redux"
-import createSagaMiddleware from "redux-saga"
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import React from "react"
+import { connect } from "react-redux"
 import { Container } from "semantic-ui-react"
 
-import reducer from "./js/reducers/index"
-import saga from "./js/saga"
 import NavBar from "./js/components/shared/NavBar"
 
 import Home from "./js/pages/Home"
 import SignIn from "./js/pages/SignIn"
 import SignUp from "./js/pages/SignUp"
 
-const sagaMiddleware = createSagaMiddleware()
-const store = createStore(reducer, applyMiddleware(sagaMiddleware))
-sagaMiddleware.run(saga)
+import UserRoute from "./js/components/routes/UserRoute"
+import GuestRoute from "./js/components/routes/GuestRoute"
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <div>
-            <NavBar />
+const App = ({ isAuthenticated }) => {
+  return (
+    <div>
+      <NavBar />
 
-            <Container text>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/sign_in" component={SignIn} />
-              <Route exact path="/sign_up" component={SignUp} />
-            </Container>
-          </div>
-        </Router>
-      </Provider>
-    )
-  }
+      <Container text>
+        <UserRoute
+          isAuthenticated={isAuthenticated}
+          exact
+          path="/"
+          component={Home}
+        />
+        <GuestRoute
+          isAuthenticated={isAuthenticated}
+          exact
+          path="/sign_in"
+          component={SignIn}
+        />
+        <GuestRoute
+          isAuthenticated={isAuthenticated}
+          exact
+          path="/sign_up"
+          component={SignUp}
+        />
+      </Container>
+    </div>
+  )
 }
 
-export default App
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps)(App)

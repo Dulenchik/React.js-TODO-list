@@ -1,11 +1,12 @@
+import { find, filter, every } from "lodash"
+import { addFlashMessage } from "./flashMessages"
+
 export const ADD_TASK = "ADD_TASK"
 export const DELETE_TASK = "DELETE_TASK"
 export const UPDATE_TASK = "UPDATE_TASK"
 export const INCREASE_TASK_PRIORITY = "INCREASE_TASK_PRIORITY"
 export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
-
-export const TOGGLE_TASK_COMPLETION_REQUEST = "TOGGLE_TASK_COMPLETION_REQUEST"
-export const TOGGLE_TASK_COMPLETION_SUCCESS = "TOGGLE_TASK_COMPLETION_SUCCESS"
+export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
 
 export function addTask(projectId, newTaskName) {
   return {
@@ -32,9 +33,20 @@ export function updateTask(id, payload) {
 }
 
 export function toggleTaskCompletion(id) {
-  return {
-    type: TOGGLE_TASK_COMPLETION_REQUEST,
-    id: id
+  return (dispatch, getState) => {
+    dispatch({ type: TOGGLE_TASK_COMPLETION, id: id })
+
+    const store = getState()
+    const taskById = find(store.tasks, { id: id })
+    const tasks = filter(store.tasks, { projectId: taskById.projectId })
+    if (every(tasks, "isDone")) {
+      const flashMessage = addFlashMessage(
+        "success",
+        "Well done!",
+        "You've successfully done all tasks."
+      )
+      dispatch(flashMessage)
+    }
   }
 }
 

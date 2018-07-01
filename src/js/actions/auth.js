@@ -1,20 +1,26 @@
-export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST"
-export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS"
-export const USER_LOGIN_FAILURE = "USER_LOGIN_FAILURE"
+export const USER_LOGGED_IN = "USER_LOGGED_IN"
+export const USER_LOGGED_OUT = "USER_LOGGED_OUT"
 
-export const USER_SIGN_UP_REQUEST = "USER_SIGN_UP_REQUEST"
-export const USER_SIGN_UP_SUCCESS = "USER_SIGN_UP_SUCCESS"
-export const USER_SIGN_UP_FAILURE = "USER_SIGN_UP_FAILURE"
+export const userLogin = (username, password) => (dispatch, getState, api) =>
+  api.auth.login(username, password).then(res => {
+    dispatch(userLoggedIn())
+    localStorage.setItem("todoListJWT", res.data.jwt)
+  })
 
-export const userLogin = (email, password) => ({
-  type: USER_LOGIN_REQUEST,
-  email,
-  password
-})
+export const userSignUp = (username, password, passwordConfirmation) => (
+  dispatch,
+  getState,
+  api
+) =>
+  api.auth.signUp(username, password, passwordConfirmation).then(res => {
+    localStorage.setItem("todoListJWT", res.data.jwt)
+    dispatch(userLoggedIn)
+  })
 
-export const userSignUp = (email, password, passwordConfirmation) => ({
-  type: USER_SIGN_UP_REQUEST,
-  email,
-  password,
-  passwordConfirmation
-})
+export const userLogout = () => (dispatch, getState, api) => {
+  localStorage.removeItem("todoListJWT")
+  dispatch(userLoggedOut())
+}
+
+export const userLoggedIn = () => ({ type: USER_LOGGED_IN })
+export const userLoggedOut = () => ({ type: USER_LOGGED_OUT })

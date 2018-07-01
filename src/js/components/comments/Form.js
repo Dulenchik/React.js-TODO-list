@@ -40,7 +40,7 @@ class Form extends React.Component {
 
         <UIForm.Field>
           {this.state.file ? (
-            <img src={this.state.file} width="60" />
+            <img alt="Uploaded preview" src={this.state.file} width="60" />
           ) : (
             <Dropzone
               className="dropzone"
