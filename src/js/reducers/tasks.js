@@ -1,4 +1,4 @@
-import { DELETE_PROJECT } from "./../../js/actions/projects"
+import { DELETE_PROJECT } from "./../actions/projects"
 
 import {
   ADD_TASK,
@@ -7,36 +7,34 @@ import {
   TOGGLE_TASK_COMPLETION,
   INCREASE_TASK_PRIORITY,
   DECREASE_TASK_PRIORITY
-} from "./../../js/actions/tasks"
+} from "./../actions/tasks"
 
 import { find, filter, orderBy } from "lodash"
 
-const tasksList = [
-  { id: 39, name: "Apply Redux", position: 1, isDone: false, projectId: 2 },
-  {
-    id: 37,
-    name: "Learn Redux",
-    position: 0,
-    isDone: true,
-    projectId: 2,
-    dueDate: "29/05/2018",
-    dueTime: "12:20"
-  },
-
-  { id: 5, name: "Take a Coffee", position: 0, isDone: false, projectId: 3 },
-
-  { id: 12, name: "Generate App", position: 0, isDone: true, projectId: 1 },
-  {
-    id: 17,
-    name: "Implement Business Logic",
-    position: 1,
-    isDone: true,
-    projectId: 1,
-    dueDate: "23/04/2018",
-    dueTime: "17:30"
-  },
-  { id: 23, name: "Write specs", position: 2, isDone: false, projectId: 1 }
-]
+// { id: 39, name: "Apply Redux", position: 1, isDone: false, projectId: 2 },
+// {
+//   id: 37,
+//   name: "Learn Redux",
+//   position: 0,
+//   isDone: true,
+//   projectId: 2,
+//   dueDate: "29/05/2018",
+//   dueTime: "12:20"
+// },
+//
+// { id: 5, name: "Take a Coffee", position: 0, isDone: false, projectId: 3 },
+//
+// { id: 12, name: "Generate App", position: 0, isDone: true, projectId: 1 },
+// {
+//   id: 17,
+//   name: "Implement Business Logic",
+//   position: 1,
+//   isDone: true,
+//   projectId: 1,
+//   dueDate: "23/04/2018",
+//   dueTime: "17:30"
+// },
+// { id: 23, name: "Write specs", position: 2, isDone: false, projectId: 1 }
 
 function reorder(state, action, indexChanger) {
   let currentTask = find(state, task => {
@@ -62,7 +60,7 @@ function reorder(state, action, indexChanger) {
   })
 }
 
-export default function tasks(state = tasksList, action) {
+export default function tasks(state = [], action) {
   switch (action.type) {
     case DELETE_PROJECT:
       return state.filter(task => task.projectId !== action.id)

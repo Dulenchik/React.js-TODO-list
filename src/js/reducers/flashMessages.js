@@ -1,7 +1,7 @@
 import {
   ADD_FLASH_MESSAGE,
   DELETE_FLASH_MESSAGE
-} from "./../../js/actions/flashMessages"
+} from "./../actions/flashMessages"
 
 export default function flashMessages(state = [], action) {
   switch (action.type) {

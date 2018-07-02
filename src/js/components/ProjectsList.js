@@ -55,4 +55,7 @@ ProjectsList.propTypes = {
   onDelete: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsList)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProjectsList)
