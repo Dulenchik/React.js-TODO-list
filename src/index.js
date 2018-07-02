@@ -12,13 +12,15 @@ import { BrowserRouter as Router, Route } from "react-router-dom"
 import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import thunk from "redux-thunk"
+import { composeWithDevTools } from "redux-devtools-extension"
+
 import reducer from "./js/reducers/index"
 import api from "./js/utils/api"
 import { userLoggedIn } from "./js/actions/auth"
 
 const store = createStore(
   reducer,
-  applyMiddleware(thunk.withExtraArgument(api))
+  composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api)))
 )
 
 if (localStorage.todoListJWT) {
