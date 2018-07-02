@@ -8,29 +8,19 @@ export const INCREASE_TASK_PRIORITY = "INCREASE_TASK_PRIORITY"
 export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
 export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
 
-export function addTask(projectId, newTaskName) {
-  return {
-    id: Math.round(Math.random() * 100),
-    type: ADD_TASK,
-    name: newTaskName,
-    projectId: projectId
-  }
-}
+let idCounter = 0
 
-export function deleteTask(id) {
-  return {
-    type: DELETE_TASK,
-    id: id
-  }
-}
+export const addTask = (projectId, name) => ({
+  id: ++idCounter,
+  type: ADD_TASK,
+  name,
+  projectId
+})
 
-export function updateTask(id, payload) {
-  return {
-    type: UPDATE_TASK,
-    payload: payload,
-    id: id
-  }
-}
+export const deleteTask = id => ({ type: DELETE_TASK, id })
+export const updateTask = (id, payload) => ({ type: UPDATE_TASK, payload, id })
+export const increaseTaskPriority = id => ({ type: INCREASE_TASK_PRIORITY, id })
+export const decreaseTaskPriority = id => ({ type: DECREASE_TASK_PRIORITY, id })
 
 export function toggleTaskCompletion(id) {
   return (dispatch, getState) => {
@@ -47,19 +37,5 @@ export function toggleTaskCompletion(id) {
       )
       dispatch(flashMessage)
     }
-  }
-}
-
-export function increaseTaskPriority(id) {
-  return {
-    type: INCREASE_TASK_PRIORITY,
-    id: id
-  }
-}
-
-export function decreaseTaskPriority(id) {
-  return {
-    type: DECREASE_TASK_PRIORITY,
-    id: id
   }
 }

@@ -81,13 +81,8 @@ const commentsList = [
 export default function comments(state = commentsList, action) {
   switch (action.type) {
     case ADD_COMMENT:
-      return state.concat({
-        id: action.id,
-        text: action.text,
-        image: action.image,
-        taskId: action.taskId,
-        createdOn: action.createdOn
-      })
+      let { id, text, image, taskId, createdOn } = action
+      return state.concat({ id, text, image, taskId, createdOn })
     case DELETE_COMMENT:
       return state.filter(comment => comment.id !== action.id)
     default:

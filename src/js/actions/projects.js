@@ -2,24 +2,8 @@ export const ADD_PROJECT = "ADD_PROJECT"
 export const DELETE_PROJECT = "DELETE_PROJECT"
 export const UPDATE_PROJECT = "UPDATE_PROJECT"
 
-export function addProject(newProjectName) {
-  return {
-    type: ADD_PROJECT,
-    name: newProjectName
-  }
-}
+let idCounter = 0
 
-export function deleteProject(id) {
-  return {
-    type: DELETE_PROJECT,
-    id: id
-  }
-}
-
-export function updateProject(id, newProjectName) {
-  return {
-    type: UPDATE_PROJECT,
-    name: newProjectName,
-    id: id
-  }
-}
+export const addProject = name => ({ type: ADD_PROJECT, id: ++idCounter, name })
+export const deleteProject = id => ({ type: DELETE_PROJECT, id })
+export const updateProject = (id, name) => ({ type: UPDATE_PROJECT, name, id })

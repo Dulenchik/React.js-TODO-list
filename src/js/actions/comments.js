@@ -1,20 +1,15 @@
 export const ADD_COMMENT = "ADD_COMMENT"
 export const DELETE_COMMENT = "DELETE_COMMENT"
 
-export function addComment(taskId, newCommentText, fileUrl) {
-  return {
-    type: ADD_COMMENT,
-    id: Math.round(Math.random() * 100),
-    text: newCommentText,
-    image: fileUrl,
-    taskId: taskId,
-    createdOn: "05/05/2018"
-  }
-}
+let idCounter = 0
 
-export function deleteComment(id) {
-  return {
-    type: DELETE_COMMENT,
-    id: id
-  }
-}
+export const addComment = (taskId, text, image) => ({
+  type: ADD_COMMENT,
+  id: ++idCounter,
+  text,
+  image,
+  taskId,
+  createdOn: "05/05/2018"
+})
+
+export const deleteComment = id => ({ type: DELETE_COMMENT, id })

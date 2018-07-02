@@ -1,6 +1,9 @@
 export const USER_LOGGED_IN = "USER_LOGGED_IN"
 export const USER_LOGGED_OUT = "USER_LOGGED_OUT"
 
+export const userLoggedIn = () => ({ type: USER_LOGGED_IN })
+export const userLoggedOut = () => ({ type: USER_LOGGED_OUT })
+
 export const userLogin = (username, password) => (dispatch, getState, api) =>
   api.auth.login(username, password).then(res => {
     dispatch(userLoggedIn())
@@ -21,6 +24,3 @@ export const userLogout = () => (dispatch, getState, api) => {
   localStorage.removeItem("todoListJWT")
   dispatch(userLoggedOut())
 }
-
-export const userLoggedIn = () => ({ type: USER_LOGGED_IN })
-export const userLoggedOut = () => ({ type: USER_LOGGED_OUT })
