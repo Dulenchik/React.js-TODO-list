@@ -18,6 +18,15 @@ export default {
   },
 
   projects: {
-    fetchAll: () => axios.get(`${apiUrl}/projects`).then(res => res.data)
+    fetchAll: () => axios.get(`${apiUrl}/projects`).then(res => res.data),
+    create: name =>
+      axios
+        .post(`${apiUrl}/projects`, { projects: { name } })
+        .then(res => res.data),
+    update: (id, name) =>
+      axios
+        .put(`${apiUrl}/projects/${id}`, { projects: { name } })
+        .then(res => res.data),
+    delete: id => axios.delete(`${apiUrl}/projects/${id}`).then(res => res.data)
   }
 }
