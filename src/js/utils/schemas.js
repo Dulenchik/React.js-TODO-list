@@ -11,7 +11,7 @@ export const projectSchema = new schema.Entity(
   }
 )
 
-export const tasksSchema = new schema.Entity(
+export const taskSchema = new schema.Entity(
   "tasks",
   {},
   {

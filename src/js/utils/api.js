@@ -28,5 +28,21 @@ export default {
         .put(`${apiUrl}/projects/${id}`, { projects: { name } })
         .then(res => res.data),
     delete: id => axios.delete(`${apiUrl}/projects/${id}`).then(res => res.data)
+  },
+
+  tasks: {
+    create: (projectId, name) =>
+      axios
+        .post(`${apiUrl}/projects/${projectId}/tasks`, { tasks: { name } })
+        .then(res => res.data),
+    update: (id, payload) =>
+      axios
+        .put(`${apiUrl}/tasks/${id}`, { tasks: payload })
+        .then(res => res.data),
+    delete: id => axios.delete(`${apiUrl}/tasks/${id}`).then(res => res.data),
+    swapWith: (currentId, targetId) =>
+      axios
+        .put(`${apiUrl}/tasks/${currentId}/swap_with/${targetId}`)
+        .then(res => res.data)
   }
 }

@@ -1,37 +1,56 @@
-import { find, filter, every } from "lodash"
+import { normalize } from "normalizr"
+import moment from "moment"
+import { find, filter, every, orderBy } from "lodash"
 import { addFlashMessage } from "./flashMessages"
+
+import { taskSchema } from "./../utils/schemas"
 
 export const TASKS_FETCHED = "TASKS_FETCHED"
 export const ADD_TASK = "ADD_TASK"
 export const DELETE_TASK = "DELETE_TASK"
 export const UPDATE_TASK = "UPDATE_TASK"
-export const INCREASE_TASK_PRIORITY = "INCREASE_TASK_PRIORITY"
-export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
-export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
-
-let idCounter = 0
 
 export const tasksFetched = data => ({ type: TASKS_FETCHED, data })
+const taskAdded = data => ({ type: ADD_TASK, data })
+const taskUpdated = data => ({ type: UPDATE_TASK, data })
+const taskDeleted = id => ({ type: DELETE_TASK, id })
 
-export const addTask = (projectId, name) => ({
-  id: ++idCounter,
-  type: ADD_TASK,
-  name,
-  projectId
-})
+export const addTask = (projectId, name) => (dispatch, getState, api) => {
+  api.tasks.create(projectId, name).then(task => {
+    const normalizedTask = normalize(task, taskSchema)
+    dispatch(taskAdded(Object.values(normalizedTask.entities.tasks)))
+  })
+}
 
-export const deleteTask = id => ({ type: DELETE_TASK, id })
-export const updateTask = (id, payload) => ({ type: UPDATE_TASK, payload, id })
-export const increaseTaskPriority = id => ({ type: INCREASE_TASK_PRIORITY, id })
-export const decreaseTaskPriority = id => ({ type: DECREASE_TASK_PRIORITY, id })
+export const updateTask = (id, payload) => (dispatch, getState, api) => {
+  let params = {}
+  if (payload.name) params.name = payload.name
+  if (payload.dueDate || payload.dueTime) {
+    params.deadline = moment(
+      `${payload.dueDate} ${payload.dueTime}`,
+      "DD/MM/YYYY HH:mm"
+    )
+      .utc()
+      .format()
+  }
+  if (payload.isDone !== null) params.done = payload.isDone
 
-export function toggleTaskCompletion(id) {
-  return (dispatch, getState) => {
-    dispatch({ type: TOGGLE_TASK_COMPLETION, id: id })
+  return api.tasks.update(id, params).then(task => {
+    const normalizedTask = normalize(task, taskSchema)
+    dispatch(taskUpdated(Object.values(normalizedTask.entities.tasks)[0]))
+    return task
+  })
+}
 
-    const store = getState()
-    const taskById = find(store.tasks, { id: id })
-    const tasks = filter(store.tasks, { projectId: taskById.projectId })
+export const deleteTask = id => (dispatch, getState, api) => {
+  api.tasks.delete(id).then(task => dispatch(taskDeleted(task.id)))
+}
+
+export const toggleTaskCompletion = id => (dispatch, getState) => {
+  const isDone = find(getState().tasks, { id }).isDone
+  dispatch(updateTask(id, { isDone: !isDone })).then(updatedTask => {
+    const task = find(getState().tasks, { id: updatedTask.id })
+    const tasks = filter(getState().tasks, { projectId: task.projectId })
     if (every(tasks, "isDone")) {
       const flashMessage = addFlashMessage(
         "success",
@@ -40,5 +59,35 @@ export function toggleTaskCompletion(id) {
       )
       dispatch(flashMessage)
     }
-  }
+  })
+}
+
+export const increaseTaskPriority = id => (dispatch, getState, api) => {
+  const task = find(getState().tasks, { id })
+  const projectTasks = filter(getState().tasks, { projectId: task.projectId })
+  const orderedTasks = orderBy(projectTasks, "position", ["asc"])
+  const targetTask = orderedTasks[orderedTasks.indexOf(task) - 1]
+  if (!targetTask) return
+
+  api.tasks.swapWith(task.id, targetTask.id).then(tasks => {
+    const normalizedOrigin = normalize(tasks.origin, taskSchema)
+    dispatch(taskUpdated(Object.values(normalizedOrigin.entities.tasks)[0]))
+    const normalizedTarget = normalize(tasks.target, taskSchema)
+    dispatch(taskUpdated(Object.values(normalizedTarget.entities.tasks)[0]))
+  })
+}
+
+export const decreaseTaskPriority = id => (dispatch, getState, api) => {
+  const task = find(getState().tasks, { id })
+  const projectTasks = filter(getState().tasks, { projectId: task.projectId })
+  const orderedTasks = orderBy(projectTasks, "position", ["asc"])
+  const targetTask = orderedTasks[orderedTasks.indexOf(task) + 1]
+  if (!targetTask) return
+
+  api.tasks.swapWith(task.id, targetTask.id).then(tasks => {
+    const normalizedOrigin = normalize(tasks.origin, taskSchema)
+    dispatch(taskUpdated(Object.values(normalizedOrigin.entities.tasks)[0]))
+    const normalizedTarget = normalize(tasks.target, taskSchema)
+    dispatch(taskUpdated(Object.values(normalizedTarget.entities.tasks)[0]))
+  })
 }

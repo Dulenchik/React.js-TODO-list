@@ -1,7 +1,7 @@
 import { normalize } from "normalizr"
 import { flatMap } from "lodash"
 
-import { projectSchema, tasksSchema } from "./../utils/schemas"
+import { projectSchema, taskSchema } from "./../utils/schemas"
 import { tasksFetched } from "./tasks"
 
 export const PROJECTS_FETCHED = "PROJECTS_FETCHED"
@@ -21,7 +21,7 @@ export const fetchProjects = () => (dispatch, getState, api) => {
       project => project.associations.tasks
     )
     const normalizedProjects = normalize(projectsWithTasks, [projectSchema])
-    const normalizedTasks = normalize(tasks, [tasksSchema])
+    const normalizedTasks = normalize(tasks, [taskSchema])
     dispatch(
       projectsFetched(Object.values(normalizedProjects.entities.projects))
     )
