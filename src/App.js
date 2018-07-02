@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Container } from "semantic-ui-react"
+import axios from "axios"
 
 import NavBar from "./js/components/shared/NavBar"
 
@@ -11,7 +12,26 @@ import SignUp from "./js/pages/SignUp"
 import UserRoute from "./js/components/routes/UserRoute"
 import GuestRoute from "./js/components/routes/GuestRoute"
 
-const App = ({ isAuthenticated }) => {
+import { userLogout } from "./js/actions/auth"
+
+const App = ({ isAuthenticated, logout }) => {
+  if (localStorage.todoListJWT) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${
+      localStorage.todoListJWT
+    }`
+    axios.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response.status === 401) {
+          logout()
+        }
+        return Promise.reject(error)
+      }
+    )
+  } else {
+    delete axios.defaults.headers.common["Authorization"]
+  }
+
   return (
     <div>
       <NavBar />
@@ -44,4 +64,11 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 })
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(userLogout())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

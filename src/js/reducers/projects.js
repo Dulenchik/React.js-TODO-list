@@ -1,4 +1,5 @@
 import {
+  PROJECTS_FETCHED,
   ADD_PROJECT,
   DELETE_PROJECT,
   UPDATE_PROJECT
@@ -6,6 +7,8 @@ import {
 
 export default function projects(state = [], action) {
   switch (action.type) {
+    case PROJECTS_FETCHED:
+      return state.concat(action.data)
     case ADD_PROJECT:
       return state.concat({ id: action.id, name: action.name })
     case DELETE_PROJECT:

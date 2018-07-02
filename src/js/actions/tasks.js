@@ -1,6 +1,7 @@
 import { find, filter, every } from "lodash"
 import { addFlashMessage } from "./flashMessages"
 
+export const TASKS_FETCHED = "TASKS_FETCHED"
 export const ADD_TASK = "ADD_TASK"
 export const DELETE_TASK = "DELETE_TASK"
 export const UPDATE_TASK = "UPDATE_TASK"
@@ -9,6 +10,8 @@ export const DECREASE_TASK_PRIORITY = "DECREASE_TASK_PRIORITY"
 export const TOGGLE_TASK_COMPLETION = "TOGGLE_TASK_COMPLETION"
 
 let idCounter = 0
+
+export const tasksFetched = data => ({ type: TASKS_FETCHED, data })
 
 export const addTask = (projectId, name) => ({
   id: ++idCounter,

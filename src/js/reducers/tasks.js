@@ -1,6 +1,7 @@
 import { DELETE_PROJECT } from "./../actions/projects"
 
 import {
+  TASKS_FETCHED,
   ADD_TASK,
   DELETE_TASK,
   UPDATE_TASK,
@@ -64,6 +65,8 @@ export default function tasks(state = [], action) {
   switch (action.type) {
     case DELETE_PROJECT:
       return state.filter(task => task.projectId !== action.id)
+    case TASKS_FETCHED:
+      return state.concat(action.data)
     case ADD_TASK:
       return state.concat({
         id: action.id,
