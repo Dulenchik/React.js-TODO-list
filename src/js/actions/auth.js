@@ -6,8 +6,9 @@ export const userLoggedOut = () => ({ type: USER_LOGGED_OUT })
 
 export const userLogin = (username, password) => (dispatch, getState, api) =>
   api.auth.login(username, password).then(res => {
-    dispatch(userLoggedIn())
     localStorage.setItem("todoListJWT", res.data.jwt)
+    api.setup(() => dispatch(userLogout()))
+    dispatch(userLoggedIn())
   })
 
 export const userSignUp = (username, password, passwordConfirmation) => (
@@ -17,7 +18,8 @@ export const userSignUp = (username, password, passwordConfirmation) => (
 ) =>
   api.auth.signUp(username, password, passwordConfirmation).then(res => {
     localStorage.setItem("todoListJWT", res.data.jwt)
-    dispatch(userLoggedIn)
+    api.setup(() => dispatch(userLogout()))
+    dispatch(userLoggedIn())
   })
 
 export const userLogout = () => (dispatch, getState, api) => {

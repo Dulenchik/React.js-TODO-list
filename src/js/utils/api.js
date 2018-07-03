@@ -3,6 +3,24 @@ import axios from "axios"
 const apiUrl = "http://localhost:3001"
 
 export default {
+  setup: logout => {
+    const token = localStorage.todoListJWT
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+      axios.interceptors.response.use(
+        response => response,
+        error => {
+          if (error.response.status === 401) {
+            logout()
+          }
+          return Promise.reject(error)
+        }
+      )
+    } else {
+      delete axios.defaults.headers.common["Authorization"]
+    }
+  },
+
   auth: {
     signUp: (username, password, passwordConfirmation) => {
       let params = {
