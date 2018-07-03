@@ -5,6 +5,7 @@ import SignInForm from "./../components/auth/SignInForm"
 
 const SignIn = ({ history }) => (
   <div>
+    <div />
     <Header>Sign In</Header>
     <SignInForm history={history} />
     <Divider hidden />

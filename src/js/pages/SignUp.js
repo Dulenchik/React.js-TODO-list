@@ -5,6 +5,7 @@ import SignUpForm from "./../components/auth/SignUpForm"
 
 const SignUp = ({ history }) => (
   <div>
+    <div />
     <Header>Sign Up</Header>
     <SignUpForm history={history} />
     <Divider hidden />
