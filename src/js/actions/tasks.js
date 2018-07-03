@@ -16,14 +16,14 @@ const taskUpdated = data => ({ type: UPDATE_TASK, data })
 const taskDeleted = id => ({ type: DELETE_TASK, id })
 
 export const fetchTasks = () => (dispatch, getState, api) => {
-  api.tasks.fetchAll().then(tasks => {
+  return api.tasks.fetchAll().then(tasks => {
     const normalizedTasks = normalize(tasks, [taskSchema])
     dispatch(tasksFetched(Object.values(normalizedTasks.entities.tasks)))
   })
 }
 
 export const addTask = (projectId, name) => (dispatch, getState, api) => {
-  api.tasks.create(projectId, name).then(task => {
+  return api.tasks.create(projectId, name).then(task => {
     const normalizedTask = normalize(task, taskSchema)
     dispatch(taskAdded(Object.values(normalizedTask.entities.tasks)))
   })
@@ -50,7 +50,7 @@ export const updateTask = (id, payload) => (dispatch, getState, api) => {
 }
 
 export const deleteTask = id => (dispatch, getState, api) => {
-  api.tasks.delete(id).then(task => dispatch(taskDeleted(task.id)))
+  return api.tasks.delete(id).then(task => dispatch(taskDeleted(task.id)))
 }
 
 export const toggleTaskCompletion = id => (dispatch, getState) => {

@@ -13,7 +13,7 @@ const projectUpdated = data => ({ type: UPDATE_PROJECT, data })
 const projectDeleted = id => ({ type: DELETE_PROJECT, id })
 
 export const fetchProjects = () => (dispatch, getState, api) => {
-  api.projects.fetchAll().then(projects => {
+  return api.projects.fetchAll().then(projects => {
     const normalizedProjects = normalize(projects, [projectSchema])
     dispatch(
       projectsFetched(Object.values(normalizedProjects.entities.projects))
@@ -22,14 +22,14 @@ export const fetchProjects = () => (dispatch, getState, api) => {
 }
 
 export const addProject = name => (dispatch, getState, api) => {
-  api.projects.create(name).then(project => {
+  return api.projects.create(name).then(project => {
     const normalizedProject = normalize(project, projectSchema)
     dispatch(projectAdded(Object.values(normalizedProject.entities.projects)))
   })
 }
 
 export const updateProject = (id, name) => (dispatch, getState, api) => {
-  api.projects.update(id, name).then(project => {
+  return api.projects.update(id, name).then(project => {
     const normalizedProject = normalize(project, projectSchema)
     dispatch(
       projectUpdated(Object.values(normalizedProject.entities.projects)[0])
@@ -38,5 +38,7 @@ export const updateProject = (id, name) => (dispatch, getState, api) => {
 }
 
 export const deleteProject = id => (dispatch, getState, api) => {
-  api.projects.delete(id).then(project => dispatch(projectDeleted(project.id)))
+  return api.projects
+    .delete(id)
+    .then(project => dispatch(projectDeleted(project.id)))
 }

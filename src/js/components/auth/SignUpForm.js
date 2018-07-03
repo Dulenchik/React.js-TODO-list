@@ -1,9 +1,11 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { Form, Message } from "semantic-ui-react"
+import { Form, Message, Input } from "semantic-ui-react"
 import { camelCase } from "lodash"
 import { userSignUp } from "./../../actions/auth"
+
+import InputWithErrors from "./../shared/InputWithError"
 
 class SignUpForm extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class SignUpForm extends React.Component {
     this.props
       .onSubmit(username, password, passwordConfirmation)
       .then(() => this.props.history.push("/"))
-      .catch(err => this.setState({ errors: err.response.data.error.message }))
+      .catch(err => this.setState({ errors: err.response.data.error.fields }))
   }
 
   onChange = e => this.setState({ [camelCase(e.target.name)]: e.target.value })
@@ -36,24 +38,30 @@ class SignUpForm extends React.Component {
         )}
 
         <Form onSubmit={this.submit}>
-          <Form.Input
-            onChange={this.onChange}
-            name="username"
-            type="text"
-            placeholder="theCoolest17"
-          />
-          <Form.Input
-            onChange={this.onChange}
-            name="password"
-            type="password"
-            placeholder="Password"
-          />
-          <Form.Input
-            onChange={this.onChange}
-            name="password_confirmation"
-            type="password"
-            placeholder="Confirm Password"
-          />
+          <InputWithErrors errors={this.state.errors.username}>
+            <Input
+              onChange={this.onChange}
+              name="username"
+              type="text"
+              placeholder="theCoolest17"
+            />
+          </InputWithErrors>
+          <InputWithErrors errors={this.state.errors.password}>
+            <Input
+              onChange={this.onChange}
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+          </InputWithErrors>
+          <InputWithErrors errors={this.state.errors.password_confirmation}>
+            <Input
+              onChange={this.onChange}
+              name="password_confirmation"
+              type="password"
+              placeholder="Confirm Password"
+            />
+          </InputWithErrors>
 
           <Form.Button type="submit" size="large" color="blue">
             Sign Up

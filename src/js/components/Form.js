@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Form as UIForm } from "semantic-ui-react"
+import InputWithError from "./shared/InputWithError"
 
 class Form extends Component {
   constructor(props) {
@@ -7,12 +8,13 @@ class Form extends Component {
 
     this.state = {
       showControls: props.alwaysShowControls,
-      value: this.props.name || ""
+      name: this.props.name || "",
+      errors: {}
     }
   }
 
   cancel = () => {
-    const newState = { value: "" }
+    const newState = { name: "", errors: {} }
     if (!this.props.alwaysShowControls) {
       newState.showControls = false
     }
@@ -24,10 +26,12 @@ class Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    if (!this.state.value) {
+    if (!this.state.name) {
       return
     }
-    this.props.onSubmit(this.state.value)
+    this.props
+      .onSubmit(this.state.name)
+      .catch(err => this.setState({ errors: err.response.data.error.fields }))
     this.cancel()
   }
 
@@ -38,7 +42,7 @@ class Form extends Component {
 
   handleChange = e => {
     const value = e.target.value
-    const newState = { value: value }
+    const newState = { name: value }
     if (!this.props.alwaysShowControls) {
       newState.showControls = !!value
     }
@@ -48,13 +52,16 @@ class Form extends Component {
   render() {
     return (
       <UIForm onSubmit={this.handleSubmit}>
-        <UIForm.Input
-          type="text"
-          placeholder={this.props.placeholder}
-          value={this.state.value}
-          onChange={this.handleChange}
-          fluid
-        />
+        <InputWithError errors={this.state.errors.name}>
+          <UIForm.Input
+            type="text"
+            name="name"
+            placeholder={this.props.placeholder}
+            value={this.state.name}
+            onChange={this.handleChange}
+            fluid
+          />
+        </InputWithError>
 
         {this.state.showControls && (
           <UIForm.Group>
