@@ -1,12 +1,18 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { filter } from "lodash"
+import { filter, orderBy } from "lodash"
 import Form from "./Form"
 import Item from "./Item"
-import { addComment, deleteComment } from "./../../actions/comments"
+import {
+  fetchComments,
+  addComment,
+  deleteComment
+} from "./../../actions/comments"
 import { Modal as ModalUI, List, Divider } from "semantic-ui-react"
 
 class Modal extends Component {
+  componentDidMount = () => this.props.fetchComments()
+
   render() {
     return (
       <ModalUI
@@ -39,13 +45,18 @@ class Modal extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  comments: filter(state.comments, item => item.taskId === ownProps.taskId)
+  comments: orderBy(
+    filter(state.comments, item => item.taskId === ownProps.taskId),
+    "id",
+    ["desc"]
+  )
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onCreate: (text, fileUrl) =>
     dispatch(addComment(ownProps.taskId, text, fileUrl)),
-  onDelete: id => dispatch(deleteComment(id))
+  onDelete: id => dispatch(deleteComment(id)),
+  fetchComments: () => dispatch(fetchComments(ownProps.taskId))
 })
 
 export default connect(

@@ -44,5 +44,20 @@ export default {
       axios
         .put(`${apiUrl}/tasks/${currentId}/swap_with/${targetId}`)
         .then(res => res.data)
+  },
+
+  comments: {
+    fetchAll: id =>
+      axios.get(`${apiUrl}/tasks/${id}/comments`).then(res => res.data),
+    create: (id, text, file) => {
+      const formData = new FormData()
+      formData.append("comments[text]", text)
+      formData.append("comments[file]", file)
+
+      return axios
+        .post(`${apiUrl}/tasks/${id}/comments`, formData)
+        .then(res => res.data)
+    },
+    delete: id => axios.delete(`${apiUrl}/comments/${id}`).then(res => res.data)
   }
 }

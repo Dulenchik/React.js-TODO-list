@@ -21,7 +21,7 @@ class Form extends React.Component {
   }
 
   onDropAccepted = files => {
-    this.setState({ file: files[0].preview })
+    this.setState({ file: files[0] })
   }
 
   onChange = e => {
@@ -40,7 +40,11 @@ class Form extends React.Component {
 
         <UIForm.Field>
           {this.state.file ? (
-            <img alt="Uploaded preview" src={this.state.file} width="60" />
+            <img
+              alt="Uploaded preview"
+              src={this.state.file.preview}
+              width="60"
+            />
           ) : (
             <Dropzone
               className="dropzone"
