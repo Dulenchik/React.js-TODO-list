@@ -10,8 +10,8 @@ const commentsFetched = data => ({ type: COMMENTS_FETCHED, data })
 const commentAdded = data => ({ type: ADD_COMMENT, data })
 const commentDeleted = id => ({ type: DELETE_COMMENT, id })
 
-export const fetchComments = taskId => (dispatch, getState, api) => {
-  api.comments.fetchAll(taskId).then(comments => {
+export const fetchComments = () => (dispatch, getState, api) => {
+  api.comments.fetchAll().then(comments => {
     const normalizedComments = normalize(comments, [commentSchema])
     dispatch(
       commentsFetched(Object.values(normalizedComments.entities.comments))

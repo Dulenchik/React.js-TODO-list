@@ -31,6 +31,7 @@ export default {
   },
 
   tasks: {
+    fetchAll: () => axios.get(`${apiUrl}/tasks`).then(res => res.data),
     create: (projectId, name) =>
       axios
         .post(`${apiUrl}/projects/${projectId}/tasks`, { tasks: { name } })
@@ -47,15 +48,14 @@ export default {
   },
 
   comments: {
-    fetchAll: id =>
-      axios.get(`${apiUrl}/tasks/${id}/comments`).then(res => res.data),
-    create: (id, text, file) => {
+    fetchAll: () => axios.get(`${apiUrl}/comments`).then(res => res.data),
+    create: (taskId, text, file) => {
       const formData = new FormData()
       formData.append("comments[text]", text)
       formData.append("comments[file]", file)
 
       return axios
-        .post(`${apiUrl}/tasks/${id}/comments`, formData)
+        .post(`${apiUrl}/tasks/${taskId}/comments`, formData)
         .then(res => res.data)
     },
     delete: id => axios.delete(`${apiUrl}/comments/${id}`).then(res => res.data)

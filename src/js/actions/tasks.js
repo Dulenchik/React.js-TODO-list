@@ -10,10 +10,17 @@ export const ADD_TASK = "ADD_TASK"
 export const DELETE_TASK = "DELETE_TASK"
 export const UPDATE_TASK = "UPDATE_TASK"
 
-export const tasksFetched = data => ({ type: TASKS_FETCHED, data })
+const tasksFetched = data => ({ type: TASKS_FETCHED, data })
 const taskAdded = data => ({ type: ADD_TASK, data })
 const taskUpdated = data => ({ type: UPDATE_TASK, data })
 const taskDeleted = id => ({ type: DELETE_TASK, id })
+
+export const fetchTasks = () => (dispatch, getState, api) => {
+  api.tasks.fetchAll().then(tasks => {
+    const normalizedTasks = normalize(tasks, [taskSchema])
+    dispatch(tasksFetched(Object.values(normalizedTasks.entities.tasks)))
+  })
+}
 
 export const addTask = (projectId, name) => (dispatch, getState, api) => {
   api.tasks.create(projectId, name).then(task => {
@@ -62,11 +69,11 @@ export const toggleTaskCompletion = id => (dispatch, getState) => {
   })
 }
 
-export const increaseTaskPriority = id => (dispatch, getState, api) => {
+const reorderCreator = orderModifier => id => (dispatch, getState, api) => {
   const task = find(getState().tasks, { id })
   const projectTasks = filter(getState().tasks, { projectId: task.projectId })
   const orderedTasks = orderBy(projectTasks, "position", ["asc"])
-  const targetTask = orderedTasks[orderedTasks.indexOf(task) - 1]
+  const targetTask = orderedTasks[orderedTasks.indexOf(task) - orderModifier]
   if (!targetTask) return
 
   api.tasks.swapWith(task.id, targetTask.id).then(tasks => {
@@ -77,17 +84,5 @@ export const increaseTaskPriority = id => (dispatch, getState, api) => {
   })
 }
 
-export const decreaseTaskPriority = id => (dispatch, getState, api) => {
-  const task = find(getState().tasks, { id })
-  const projectTasks = filter(getState().tasks, { projectId: task.projectId })
-  const orderedTasks = orderBy(projectTasks, "position", ["asc"])
-  const targetTask = orderedTasks[orderedTasks.indexOf(task) + 1]
-  if (!targetTask) return
-
-  api.tasks.swapWith(task.id, targetTask.id).then(tasks => {
-    const normalizedOrigin = normalize(tasks.origin, taskSchema)
-    dispatch(taskUpdated(Object.values(normalizedOrigin.entities.tasks)[0]))
-    const normalizedTarget = normalize(tasks.target, taskSchema)
-    dispatch(taskUpdated(Object.values(normalizedTarget.entities.tasks)[0]))
-  })
-}
+export const increaseTaskPriority = reorderCreator(1)
+export const decreaseTaskPriority = reorderCreator(-1)
