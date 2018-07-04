@@ -33,7 +33,7 @@ class SignInForm extends Component {
           <Form.Input
             name="username"
             type="username"
-            placeholder="theCoolest17"
+            placeholder="Username"
             onChange={this.onChange}
           />
           <Form.Input

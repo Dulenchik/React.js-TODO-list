@@ -7,6 +7,8 @@ import {
   UPDATE_TASK
 } from "./../actions/tasks"
 
+import { USER_LOGGED_OUT } from "./../actions/auth"
+
 export default function tasks(state = [], action) {
   switch (action.type) {
     case DELETE_PROJECT:
@@ -24,6 +26,8 @@ export default function tasks(state = [], action) {
           return task
         }
       })
+    case USER_LOGGED_OUT:
+      return []
     default:
       return state
   }

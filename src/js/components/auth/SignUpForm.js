@@ -43,7 +43,7 @@ class SignUpForm extends React.Component {
               onChange={this.onChange}
               name="username"
               type="text"
-              placeholder="theCoolest17"
+              placeholder="Username"
             />
           </InputWithErrors>
           <InputWithErrors errors={this.state.errors.password}>

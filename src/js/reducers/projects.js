@@ -5,6 +5,8 @@ import {
   UPDATE_PROJECT
 } from "./../actions/projects"
 
+import { USER_LOGGED_OUT } from "./../actions/auth"
+
 export default function projects(state = [], action) {
   switch (action.type) {
     case ADD_PROJECT:
@@ -20,6 +22,8 @@ export default function projects(state = [], action) {
           return project
         }
       })
+    case USER_LOGGED_OUT:
+      return []
     default:
       return state
   }
