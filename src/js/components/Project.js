@@ -28,12 +28,12 @@ class Project extends Component {
       <Segment>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={1}>
+            <Grid.Column width={1} onClick={this.props.onClick}>
               <Icon name="dropdown" />
             </Grid.Column>
 
-            <Grid.Column width={11}>
-              <span onClick={this.props.onClick}>{name}</span>
+            <Grid.Column width={11} onClick={this.props.onClick}>
+              <span>{name}</span>
             </Grid.Column>
 
             <Grid.Column width={4} textAlign={"right"}>
