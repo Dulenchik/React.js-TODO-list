@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { Form as UIForm } from "semantic-ui-react"
+import validator from "./../utils/validations"
 import InputWithError from "./shared/InputWithError"
 
 class Form extends Component {
@@ -9,7 +10,8 @@ class Form extends Component {
     this.state = {
       showControls: props.alwaysShowControls,
       name: this.props.name || "",
-      errors: {}
+      errors: {},
+      isValid: false
     }
   }
 
@@ -26,13 +28,13 @@ class Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    if (!this.state.name) {
-      return
-    }
-    this.props
-      .onSubmit(this.state.name)
-      .then(() => this.cancel())
-      .catch(err => this.setState({ errors: err.response.data.error.fields }))
+    this.setState(validator.projectAndTask(this.state), () => {
+      if (!this.state.isValid) return
+      this.props
+        .onSubmit(this.state.name)
+        .then(() => this.cancel())
+        .catch(err => this.setState({ errors: err.response.data.error.fields }))
+    })
   }
 
   handleCancel = e => {

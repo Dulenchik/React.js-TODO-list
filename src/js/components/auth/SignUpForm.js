@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import { Form, Message, Input } from "semantic-ui-react"
 import { camelCase } from "lodash"
 import { userSignUp } from "./../../actions/auth"
+import validator from "./../../utils/validations"
 
 import InputWithErrors from "./../shared/InputWithError"
 
@@ -15,17 +16,21 @@ class SignUpForm extends React.Component {
       username: "",
       password: "",
       passwordConfirmation: "",
-      errors: {}
+      errors: {},
+      isValid: true
     }
   }
 
   submit = e => {
     e.preventDefault()
-    const { username, password, passwordConfirmation } = { ...this.state }
-    this.props
-      .onSubmit(username, password, passwordConfirmation)
-      .then(() => this.props.history.push("/"))
-      .catch(err => this.setState({ errors: err.response.data.error.fields }))
+    this.setState(validator.signUp(this.state), () => {
+      if (!this.state.isValid) return
+      const { username, password, passwordConfirmation } = { ...this.state }
+      this.props
+        .onSubmit(username, password, passwordConfirmation)
+        .then(() => this.props.history.push("/"))
+        .catch(err => this.setState({ errors: err.response.data.error.fields }))
+    })
   }
 
   onChange = e => this.setState({ [camelCase(e.target.name)]: e.target.value })

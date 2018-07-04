@@ -1,23 +1,35 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { userLogin } from "./../../actions/auth"
 import { Form, Message } from "semantic-ui-react"
+import { userLogin } from "./../../actions/auth"
+import validator from "./../../utils/validations"
+
+import InputWithErrors from "./../shared/InputWithError"
 
 class SignInForm extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { username: "", password: "", error: "" }
+    this.state = {
+      username: "",
+      password: "",
+      serverError: "",
+      errors: {},
+      isValid: true
+    }
   }
 
   submit = e => {
     e.preventDefault()
-    const { username, password } = { ...this.state }
-    this.props
-      .onSubmit(username, password)
-      .then(res => this.props.history.push("/"))
-      .catch(() => this.setState({ error: "Invalid credentials" }))
+    this.setState(validator.signIn(this.state), () => {
+      if (!this.state.isValid) return
+      const { username, password } = { ...this.state }
+      this.props
+        .onSubmit(username, password)
+        .then(res => this.props.history.push("/"))
+        .catch(() => this.setState({ serverError: "Invalid credentials" }))
+    })
   }
 
   onChange = e => this.setState({ [e.target.name]: e.target.value })
@@ -25,23 +37,27 @@ class SignInForm extends Component {
   render() {
     return (
       <div>
-        {this.state.error && (
-          <Message header={"Error!"} content={this.state.error} error />
+        {this.state.serverError && (
+          <Message header={"Error!"} content={this.state.serverError} error />
         )}
 
         <Form onSubmit={this.submit}>
-          <Form.Input
-            name="username"
-            type="username"
-            placeholder="Username"
-            onChange={this.onChange}
-          />
-          <Form.Input
-            name="password"
-            type="password"
-            placeholder="Password"
-            onChange={this.onChange}
-          />
+          <InputWithErrors errors={this.state.errors.username}>
+            <Form.Input
+              onChange={this.onChange}
+              name="username"
+              type="text"
+              placeholder="Username"
+            />
+          </InputWithErrors>
+          <InputWithErrors errors={this.state.errors.password}>
+            <Form.Input
+              onChange={this.onChange}
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+          </InputWithErrors>
 
           <Form.Button type="submit" size="large" color="blue">
             Sign In

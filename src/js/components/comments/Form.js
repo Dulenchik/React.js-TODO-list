@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Form as UIForm } from "semantic-ui-react"
 import Dropzone from "react-dropzone"
+import validator from "./../../utils/validations"
 import InputWithError from "./../shared/InputWithError"
 
 // Max size is 10Mb
@@ -11,16 +12,18 @@ class Form extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { text: "", file: null, errors: {} }
+    this.state = { text: "", file: null, errors: {}, isValid: false }
   }
 
   handleCreateComment = e => {
     e.preventDefault()
-    if (!this.state.text) return
-    this.props
-      .onCreate(this.state.text, this.state.file)
-      .catch(err => this.setState({ errors: err.response.data.error.fields }))
-    this.setState({ text: "", file: null, errors: {} })
+    this.setState(validator.comment(this.state), () => {
+      if (!this.state.isValid) return
+      this.props
+        .onCreate(this.state.text, this.state.file)
+        .catch(err => this.setState({ errors: err.response.data.error.fields }))
+      this.setState({ text: "", file: null, errors: {} })
+    })
   }
 
   onDropAccepted = files => {
