@@ -7,7 +7,11 @@ class Task extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { isEditable: false, showConfirm: false, isDeadlineOpen: false }
+    this.state = {
+      isEditable: false,
+      showConfirm: false,
+      isDeadlineOpen: false
+    }
   }
 
   handleEdit = e => {
@@ -22,10 +26,10 @@ class Task extends Component {
   handleDecreasePriority = () => this.props.onMoveDown(this.props.id)
   showCommnets = () => this.props.onCommentsShow(this.props.id)
 
-  handleUpdate = newItemName => {
-    this.props.onUpdate(this.props.id, newItemName)
-    this.handleCancel()
-  }
+  handleUpdate = newItemName =>
+    this.props
+      .onUpdate(this.props.id, newItemName)
+      .then(() => this.handleCancel())
 
   render() {
     const { id, name, isDone, dueDate, dueTime, commentsCount } = {
@@ -75,7 +79,7 @@ class Task extends Component {
                 on="click"
                 position="bottom right"
                 trigger={<Button icon="clock" />}
-                onOpen={() => this.setState({ isDeadlineOpen: true }) }
+                onOpen={() => this.setState({ isDeadlineOpen: true })}
                 open={this.state.isDeadlineOpen}
                 content={
                   <DeadlineForm
@@ -83,7 +87,7 @@ class Task extends Component {
                     date={dueDate}
                     time={dueTime}
                     onSubmit={this.props.onSetDueDate}
-                    close={() => this.setState({ isDeadlineOpen: false }) }
+                    close={() => this.setState({ isDeadlineOpen: false })}
                   />
                 }
               />

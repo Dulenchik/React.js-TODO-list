@@ -17,10 +17,10 @@ class Project extends Component {
   handleCancel = () => this.setState({ isEditable: false })
   handleDelete = () => this.props.onDelete(this.props.id)
 
-  handleUpdate = newItemName => {
-    this.props.onUpdate(this.props.id, newItemName)
-    this.handleCancel()
-  }
+  handleUpdate = newItemName =>
+    this.props
+      .onUpdate(this.props.id, newItemName)
+      .then(() => this.handleCancel())
 
   render() {
     const { name } = { ...this.props }

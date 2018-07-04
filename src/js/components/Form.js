@@ -31,8 +31,8 @@ class Form extends Component {
     }
     this.props
       .onSubmit(this.state.name)
+      .then(() => this.cancel())
       .catch(err => this.setState({ errors: err.response.data.error.fields }))
-    this.cancel()
   }
 
   handleCancel = e => {

@@ -16,7 +16,9 @@ export const fetchProjects = () => (dispatch, getState, api) => {
   return api.projects.fetchAll().then(projects => {
     const normalizedProjects = normalize(projects, [projectSchema])
     dispatch(
-      projectsFetched(Object.values(normalizedProjects.entities.projects))
+      projectsFetched(
+        Object.values(normalizedProjects.entities.projects || {}) || []
+      )
     )
   })
 }

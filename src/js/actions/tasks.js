@@ -18,7 +18,9 @@ const taskDeleted = id => ({ type: DELETE_TASK, id })
 export const fetchTasks = () => (dispatch, getState, api) => {
   return api.tasks.fetchAll().then(tasks => {
     const normalizedTasks = normalize(tasks, [taskSchema])
-    dispatch(tasksFetched(Object.values(normalizedTasks.entities.tasks)))
+    dispatch(
+      tasksFetched(Object.values(normalizedTasks.entities.tasks || {}) || [])
+    )
   })
 }
 

@@ -14,7 +14,9 @@ export const fetchComments = () => (dispatch, getState, api) => {
   return api.comments.fetchAll().then(comments => {
     const normalizedComments = normalize(comments, [commentSchema])
     dispatch(
-      commentsFetched(Object.values(normalizedComments.entities.comments))
+      commentsFetched(
+        Object.values(normalizedComments.entities.comments || {}) || []
+      )
     )
   })
 }
