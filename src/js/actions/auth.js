@@ -24,5 +24,6 @@ export const userSignUp = (username, password, passwordConfirmation) => (
 
 export const userLogout = () => (dispatch, getState, api) => {
   localStorage.removeItem("todoListJWT")
+  api.setup(() => dispatch(userLogout()))
   dispatch(userLoggedOut())
 }
